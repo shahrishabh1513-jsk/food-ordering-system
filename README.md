@@ -1,10 +1,13 @@
 <p align="center">
   <h1>🍔 YumyTummy Food Ordering System</h1>
+
+  A modern, fully responsive <b>Online Food Ordering Website</b><br><br>
+
+  Built using <b>HTML, CSS, and JavaScript</b><br><br>
+
+  This project focuses on a clean <b>light-themed UI</b>, smooth user experience,  
+  and real-world food ordering flow inspired by platforms like Zomato & Swiggy.
 </p>
-
-A modern, fully responsive **Online Food Ordering Website** built using **HTML, CSS, and JavaScript**.
-
-This project focuses on a clean **light-themed UI**, smooth user experience, and real-world food ordering flow inspired by platforms like Zomato & Swiggy.
 
 ---
 
