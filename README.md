@@ -10,6 +10,7 @@
 <p align="center">
   Clean Light Theme • Smooth UI • Real-world Ordering Experience
 </p>
+
 ---
 
 <h2 align="center">🚀 Features</h2>
