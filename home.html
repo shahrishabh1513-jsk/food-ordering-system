@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - YumyTummy</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-logo">YT</div>
+        </div>
+    </div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Hero Search Section -->
+        <section class="home-hero">
+            <div class="container">
+                <div class="home-hero-content">
+                    <h1>Hungry? You're at the right place</h1>
+                    <p>Order food from the best restaurants in your city</p>
+                    
+                    <div class="search-container">
+                        <div class="location-selector">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select id="location">
+                                <option value="newyork">New York</option>
+                                <option value="losangeles">Los Angeles</option>
+                                <option value="chicago">Chicago</option>
+                                <option value="houston">Houston</option>
+                                <option value="phoenix">Phoenix</option>
+                            </select>
+                        </div>
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Search for dishes or restaurants...">
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Slider -->
+        <section class="brand-slider-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Brands</h2>
+                    <p class="section-description">Top restaurants partnered with us</p>
+                </div>
+                
+                <div class="slider-container">
+                    <button class="slider-arrow prev" id="brandPrev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="brand-slider" id="brandSlider">
+                        <!-- Brands will be populated by JavaScript -->
+                    </div>
+                    
+                    <button class="slider-arrow next" id="brandNext">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Selling Foods -->
+        <section class="top-selling">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Top Selling Foods</h2>
+                    <p class="section-description">Most ordered dishes this week</p>
+                </div>
+                
+                <div class="food-grid" id="topSellingGrid">
+                    <!-- Food items will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Restaurants List -->
+        <section class="restaurants">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Popular Restaurants</h2>
+                    <p class="section-description">Discover the best restaurants near you</p>
+                </div>
+                
+                <div class="restaurant-grid" id="restaurantGrid">
+                    <!-- Restaurants will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Offer Banner -->
+        <section class="offer-banner">
+            <div class="container">
+                <div class="banner-content">
+                    <div class="banner-text">
+                        <span class="offer-tag">Limited Time Offer</span>
+                        <h2>Get 50% OFF on first order</h2>
+                        <p>Use code: YUMMY50</p>
+                        <a href="menu.html" class="btn btn-primary">Order Now</a>
+                    </div>
+                    <div class="banner-image">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Offer">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/slider.js"></script>
+    <script src="assets/js/home.js"></script>
+</body>
+</html>

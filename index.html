@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumyTummy - Delicious Food Delivered Fast</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-logo">YT</div>
+        </div>
+    </div>
+
+    <!-- Header Component (will be loaded via JS) -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-container">
+                <div class="hero-content fade-in">
+                    <h1 class="hero-title">
+                        <span class="brand-highlight">YumyTummy</span>
+                        <br>Delicious Food Delivered Fast
+                    </h1>
+                    <p class="hero-subtitle">Satisfy your cravings with the best restaurants in town. Fresh, hot, and delivered right to your doorstep.</p>
+                    <div class="hero-buttons">
+                        <a href="signup.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                        <a href="#features" class="btn btn-outline">Learn More</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Restaurants</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50k+</span>
+                            <span class="stat-label">Happy Customers</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">30min</span>
+                            <span class="stat-label">Avg. Delivery</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image fade-in">
+                    <div class="hero-image-grid">
+                        <div class="grid-item item1">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=481&q=80" alt="Pizza" loading="lazy">
+                        </div>
+                        <div class="grid-item item2">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=499&q=80" alt="Burger" loading="lazy">
+                        </div>
+                        <div class="grid-item item3">
+                            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Pizza Slice" loading="lazy">
+                        </div>
+                        <div class="grid-item item4">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80" alt="Grilled Food" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <span class="section-subtitle">Why Choose Us</span>
+                    <h2 class="section-title">Delicious Food Made Simple</h2>
+                    <p class="section-description">Experience the best food delivery service with these amazing features</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Lightning Fast Delivery</h3>
+                        <p>Get your food delivered in 30 minutes or less, guaranteed freshness and temperature.</p>
+                    </div>
+                    <div class="feature-card fade-in" data-delay="100">
+                        <div class="feature-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Curated Restaurants</h3>
+                        <p>Only the best restaurants with highest hygiene ratings and quality ingredients.</p>
+                    </div>
+                    <div class="feature-card fade-in" data-delay="200">
+                        <div class="feature-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <h3>Exclusive Offers</h3>
+                        <p>Daily deals and discounts that make your favorite meals even more affordable.</p>
+                    </div>
+                    <div class="feature-card fade-in" data-delay="300">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Easy Tracking</h3>
+                        <p>Track your order in real-time from preparation to your doorstep.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Foods Preview -->
+        <section class="popular-preview">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <span class="section-subtitle">Popular Now</span>
+                    <h2 class="section-title">Most Loved Dishes</h2>
+                    <p class="section-description">Discover what everyone's craving today</p>
+                </div>
+                <div class="popular-grid">
+                    <div class="popular-card fade-in">
+                        <div class="popular-image">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=580&q=80" alt="Salad Bowl" loading="lazy">
+                            <span class="popular-badge">Popular</span>
+                        </div>
+                        <div class="popular-content">
+                            <h4>Fresh Harvest Bowl</h4>
+                            <p>Quinoa, avocado, mixed greens</p>
+                            <div class="popular-footer">
+                                <span class="popular-price">$12.99</span>
+                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popular-card fade-in" data-delay="100">
+                        <div class="popular-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=481&q=80" alt="Pizza" loading="lazy">
+                            <span class="popular-badge">Hot</span>
+                        </div>
+                        <div class="popular-content">
+                            <h4>Margherita Pizza</h4>
+                            <p>Fresh basil, mozzarella, tomato sauce</p>
+                            <div class="popular-footer">
+                                <span class="popular-price">$14.99</span>
+                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popular-card fade-in" data-delay="200">
+                        <div class="popular-image">
+                            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=464&q=80" alt="Sushi" loading="lazy">
+                            <span class="popular-badge">New</span>
+                        </div>
+                        <div class="popular-content">
+                            <h4>Dragon Roll Sushi</h4>
+                            <p>Eel, cucumber, avocado</p>
+                            <div class="popular-footer">
+                                <span class="popular-price">$18.99</span>
+                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popular-card fade-in" data-delay="300">
+                        <div class="popular-image">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=499&q=80" alt="Burger" loading="lazy">
+                            <span class="popular-badge">Trending</span>
+                        </div>
+                        <div class="popular-content">
+                            <h4>Classic Cheeseburger</h4>
+                            <p>Angus beef, cheddar, caramelized onions</p>
+                            <div class="popular-footer">
+                                <span class="popular-price">$11.99</span>
+                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about">
+            <div class="container">
+                <div class="about-container">
+                    <div class="about-content fade-in">
+                        <span class="section-subtitle">About Us</span>
+                        <h2 class="section-title">More Than Just Food Delivery</h2>
+                        <p class="about-text">YumyTummy was born from a simple idea: great food should be accessible to everyone, anytime. We partner with the best local restaurants to bring you an unparalleled dining experience at home.</p>
+                        <p class="about-text">Our commitment to quality means every order is handled with care, from kitchen to doorstep. We believe in supporting local businesses while providing you with delicious meals that satisfy your cravings.</p>
+                        <div class="about-features">
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>100% Quality Guaranteed</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Eco-friendly Packaging</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>24/7 Customer Support</span>
+                            </div>
+                        </div>
+                        <a href="menu.html" class="btn btn-primary">Explore Menu <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="about-image fade-in">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Restaurant Kitchen" loading="lazy">
+                        <div class="about-image-card">
+                            <i class="fas fa-smile"></i>
+                            <div>
+                                <strong>10k+</strong>
+                                <span>5-Star Reviews</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-container fade-in">
+                    <h2>Ready to Satisfy Your Cravings?</h2>
+                    <p>Join thousands of happy customers enjoying delicious meals from the best restaurants.</p>
+                    <div class="cta-buttons">
+                        <a href="signup.html" class="btn btn-primary btn-large">Sign Up Now</a>
+                        <a href="login.html" class="btn btn-outline-light">Login</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component (will be loaded via JS) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Main JavaScript -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
