@@ -1,4 +1,6 @@
-# 🍔 YumyTummy Food Ordering System
+<p align="center">
+  <h1>🍔 YumyTummy Food Ordering System</h1>
+</p>
 
 A modern, fully responsive **Online Food Ordering Website** built using **HTML, CSS, and JavaScript**.
 
@@ -6,7 +8,7 @@ This project focuses on a clean **light-themed UI**, smooth user experience, and
 
 ---
 
-## 🚀 Features
+<h2 align="center">🚀 Features</h2>
 
 * 🍽️ Modern Landing Page with clean UI
 * 🔐 Login & Signup Interface
@@ -23,7 +25,7 @@ This project focuses on a clean **light-themed UI**, smooth user experience, and
 
 ---
 
-## 🛠 Tech Stack
+<h2 align="center">🛠 Tech Stack</h2>
 
 <p align="left">
   <img src="https://skillicons.dev/icons?i=html" height="40" alt="html logo"/>
@@ -33,7 +35,7 @@ This project focuses on a clean **light-themed UI**, smooth user experience, and
 
 ---
 
-## 📂 Project Structure
+<h2 align="center">📂 Project Structure</h2>
 
 ```
 yumytummy-frontend/
@@ -60,7 +62,7 @@ yumytummy-frontend/
 
 ---
 
-## 🎯 Key Highlights
+<h2 align="center">🎯 Key Highlights</h2>
 
 * Clean and modern **Light Theme UI**
 * Real-world **Food Ordering Flow**
@@ -70,25 +72,24 @@ yumytummy-frontend/
 
 ---
 
-## 📸 Preview
+<h2 align="center">📸 Preview</h2>
 
 <img width="1857" height="878" alt="preview" src="https://github.com/user-attachments/assets/your-image-link.png" />
 
 ---
 
-## 🧠 What I Learned
-
-* Building a complete frontend web application
-* Managing state using localStorage
-* Creating responsive layouts with Flexbox & Grid
-* Designing modern UI/UX interfaces
-* Implementing real-world project structure
-
----
-
-## 🌍 Live Demo
+<h2 align="center">🌍 Live Demo</h2>
 
 https://your-username.github.io/yumytummy-food-ordering-system/
+
+---
+<h2 align="center">🔮 Future Enhancements</h2>
+
+* 🔙 Backend Integration using PHP & MySQL
+* 👤 User Authentication & Profile Management System
+* 🛒 Persistent Cart & Order History Storage
+* 📊 Admin Dashboard for managing orders, users, and restaurants
+* 📱 Mobile App Version (Android/iOS)
 
 ---
 
