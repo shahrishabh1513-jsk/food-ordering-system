@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write a Review - YumyTummy</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/review.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-logo">YT</div>
+        </div>
+    </div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <div class="container">
+            <div class="review-page">
+                <h1 class="page-title">Write a Review</h1>
+                <p class="page-subtitle">Share your experience with us</p>
+                
+                <div class="review-container">
+                    <!-- Order Summary Card -->
+                    <div class="order-card" id="orderCard">
+                        <h3>Your Order</h3>
+                        <div id="reviewOrderItems" class="review-order-items">
+                            <!-- Order items will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Review Form Card -->
+                    <div class="review-card">
+                        <h2>How was your meal?</h2>
+                        
+                        <form id="reviewForm">
+                            <!-- Overall Rating -->
+                            <div class="rating-section">
+                                <label>Overall Rating *</label>
+                                <div class="star-rating" id="overallRating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                                <input type="hidden" id="ratingValue" value="0">
+                            </div>
+                            
+                            <!-- Food Quality Rating -->
+                            <div class="rating-section">
+                                <label>Food Quality</label>
+                                <div class="star-rating" id="foodRating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Delivery Rating -->
+                            <div class="rating-section">
+                                <label>Delivery Experience</label>
+                                <div class="star-rating" id="deliveryRating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Review Text -->
+                            <div class="form-group">
+                                <label for="reviewTitle">Review Title *</label>
+                                <input type="text" id="reviewTitle" placeholder="Summarize your experience" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="reviewContent">Your Review *</label>
+                                <textarea id="reviewContent" rows="5" placeholder="Tell us more about your experience..." required></textarea>
+                            </div>
+                            
+                            <!-- Photos -->
+                            <div class="form-group">
+                                <label>Add Photos (Optional)</label>
+                                <div class="photo-upload">
+                                    <div class="photo-preview" id="photoPreview"></div>
+                                    <label for="photoInput" class="upload-btn">
+                                        <i class="fas fa-camera"></i>
+                                        <span>Add Photos</span>
+                                    </label>
+                                    <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
+                                </div>
+                            </div>
+                            
+                            <!-- Recommend -->
+                            <div class="form-group">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="recommend" checked>
+                                    <span class="checkmark"></span>
+                                    I would recommend this restaurant to others
+                                </label>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary submit-review" id="submitReview">
+                                Submit Review <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Recent Reviews Card -->
+                    <div class="recent-reviews-card">
+                        <h3>Recent Reviews</h3>
+                        <div class="recent-reviews" id="recentReviews">
+                            <!-- Recent reviews will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/review.js"></script>
+</body>
+</html>

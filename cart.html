@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - YumyTummy</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/cart.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-logo">YT</div>
+        </div>
+    </div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <div class="container">
+            <div class="cart-page">
+                <h1 class="page-title">Your Cart</h1>
+                
+                <div class="cart-container">
+                    <!-- Cart Items Section -->
+                    <div class="cart-items-section">
+                        <div class="cart-header">
+                            <span class="cart-header-item">Item</span>
+                            <span class="cart-header-price">Price</span>
+                            <span class="cart-header-quantity">Quantity</span>
+                            <span class="cart-header-total">Total</span>
+                            <span class="cart-header-remove"></span>
+                        </div>
+                        
+                        <div id="cartItemsContainer" class="cart-items">
+                            <!-- Cart items will be populated here -->
+                        </div>
+                        
+                        <div class="cart-actions">
+                            <button class="btn btn-outline" onclick="window.location.href='menu.html'">
+                                <i class="fas fa-arrow-left"></i> Continue Shopping
+                            </button>
+                            <button class="btn btn-outline" id="clearCartBtn">
+                                <i class="fas fa-trash"></i> Clear Cart
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Cart Summary Section -->
+                    <div class="cart-summary-section">
+                        <div class="cart-summary">
+                            <h2>Order Summary</h2>
+                            
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span id="subtotal">$0.00</span>
+                            </div>
+                            
+                            <div class="summary-row">
+                                <span>Delivery Fee</span>
+                                <span id="deliveryFee">$2.99</span>
+                            </div>
+                            
+                            <div class="summary-row">
+                                <span>Tax (8%)</span>
+                                <span id="tax">$0.00</span>
+                            </div>
+                            
+                            <div class="summary-row discount-row" id="discountRow" style="display: none;">
+                                <span>Discount</span>
+                                <span id="discountAmount">-$0.00</span>
+                            </div>
+                            
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span id="total">$0.00</span>
+                            </div>
+                            
+                            <!-- Coupon Section -->
+                            <div class="coupon-section">
+                                <h3>Apply Coupon</h3>
+                                <div class="coupon-input-group">
+                                    <input type="text" id="couponInput" placeholder="Enter coupon code">
+                                    <button class="btn btn-primary" id="applyCouponBtn">Apply</button>
+                                </div>
+                                <div id="couponMessage" class="coupon-message"></div>
+                            </div>
+                            
+                            <!-- Place Order Button -->
+                            <button class="btn btn-primary place-order-btn" id="placeOrderBtn">
+                                Proceed to Checkout <i class="fas fa-arrow-right"></i>
+                            </button>
+                            
+                            <!-- Payment Methods Icons -->
+                            <div class="payment-methods">
+                                <span>We accept:</span>
+                                <div class="payment-icons">
+                                    <i class="fab fa-cc-visa"></i>
+                                    <i class="fab fa-cc-mastercard"></i>
+                                    <i class="fab fa-cc-amex"></i>
+                                    <i class="fab fa-cc-paypal"></i>
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Delivery Address Card -->
+                        <div class="delivery-card">
+                            <h3>Delivery Address</h3>
+                            <div class="saved-address">
+                                <p><strong>Home</strong></p>
+                                <p>123 Main Street, Apt 4B</p>
+                                <p>New York, NY 10001</p>
+                                <button class="btn-link">Change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+</body>
+</html>

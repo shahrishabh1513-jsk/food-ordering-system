@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - YumyTummy</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/success.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-logo">YT</div>
+        </div>
+    </div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <div class="container">
+            <div class="success-page">
+                <!-- Success Animation -->
+                <div class="success-animation">
+                    <div class="success-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <h1 class="success-title">Order Confirmed!</h1>
+                <p class="success-message">Thank you for ordering with YumyTummy</p>
+                
+                <!-- Order Details Card -->
+                <div class="order-details-card">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-label">Order Number</span>
+                            <h2 id="orderNumber">ORD12345678</h2>
+                        </div>
+                        <span class="order-status">Confirmed</span>
+                    </div>
+                    
+                    <!-- Delivery Timeline -->
+                    <div class="delivery-timeline">
+                        <h3>Delivery Status</h3>
+                        
+                        <div class="timeline-steps">
+                            <div class="timeline-step completed">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <span class="timeline-title">Order Placed</span>
+                                    <span class="timeline-time" id="orderTime">Just now</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-step active">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <span class="timeline-title">Preparing</span>
+                                    <span class="timeline-time">Estimated: 5-10 min</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-step">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-motorcycle"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <span class="timeline-title">Out for Delivery</span>
+                                    <span class="timeline-time">Next</span>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-step">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <span class="timeline-title">Delivered</span>
+                                    <span class="timeline-time">Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Delivery Partner Info -->
+                    <div class="delivery-partner">
+                        <div class="partner-info">
+                            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Delivery Partner" class="partner-image">
+                            <div>
+                                <h4>Mike Johnson</h4>
+                                <p>Your delivery partner</p>
+                                <div class="partner-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span>4.8 (120 deliveries)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="partner-contact">
+                            <button class="btn-icon" id="callPartner">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-icon" id="messagePartner">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- ETA -->
+                    <div class="eta-section">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <span class="eta-label">Estimated Delivery Time</span>
+                            <span class="eta-value" id="eta">30-40 minutes</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Summary -->
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        
+                        <div id="orderItems" class="order-items">
+                            <!-- Order items will be loaded here -->
+                        </div>
+                        
+                        <div class="summary-details">
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span id="orderSubtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Delivery Fee</span>
+                                <span id="orderDelivery">$2.99</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (8%)</span>
+                                <span id="orderTax">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span id="orderTotal">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Delivery Address -->
+                    <div class="delivery-address">
+                        <h3>Delivery Address</h3>
+                        <p id="deliveryAddress"></p>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="trackOrderBtn">
+                            <i class="fas fa-map-marker-alt"></i> Track Order
+                        </button>
+                        <button class="btn btn-outline" id="printBillBtn">
+                            <i class="fas fa-print"></i> Print Bill
+                        </button>
+                        <button class="btn btn-outline" onclick="window.location.href='review.html'">
+                            <i class="fas fa-star"></i> Write a Review
+                        </button>
+                    </div>
+                    
+                    <!-- Need Help -->
+                    <div class="need-help">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <h4>Need Help?</h4>
+                            <p>Contact our support team at <a href="mailto:support@yumytummy.com">support@yumytummy.com</a> or call <a href="tel:+18001234567">1-800-123-4567</a></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Continue Shopping -->
+                <div class="continue-shopping">
+                    <a href="menu.html" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/success.js"></script>
+</body>
+</html>
