@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - YumyTummy</title>
+    <title>Discover - YumyTummy</title>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,7 +33,7 @@
         <!-- Hero Search Section -->
         <section class="home-hero">
             <div class="container">
-                <div class="home-hero-content">
+                <div class="home-hero-content fade-in">
                     <h1>Hungry? You're at the right place</h1>
                     <p>Order food from the best restaurants in your city</p>
                     
@@ -41,11 +41,16 @@
                         <div class="location-selector">
                             <i class="fas fa-map-marker-alt"></i>
                             <select id="location">
-                                <option value="newyork">New York</option>
-                                <option value="losangeles">Los Angeles</option>
-                                <option value="chicago">Chicago</option>
-                                <option value="houston">Houston</option>
-                                <option value="phoenix">Phoenix</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="delhi">Delhi NCR</option>
+                                <option value="bangalore">Bangalore</option>
+                                <option value="chennai">Chennai</option>
+                                <option value="kolkata">Kolkata</option>
+                                <option value="pune">Pune</option>
+                                <option value="hyderabad">Hyderabad</option>
+                                <option value="ahmedabad">Ahmedabad</option>
+                                <option value="jaipur">Jaipur</option>
+                                <option value="lucknow">Lucknow</option>
                             </select>
                         </div>
                         <div class="search-box">
@@ -55,14 +60,38 @@
                             </button>
                         </div>
                     </div>
+                    
+                    <div class="popular-searches">
+                        <span>Popular:</span>
+                        <a href="#">Pizza</a>
+                        <a href="#">Burger</a>
+                        <a href="#">Biryani</a>
+                        <a href="#">Chinese</a>
+                        <a href="#">South Indian</a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Brand Slider -->
+        <!-- Quick Filters -->
+        <section class="quick-filters">
+            <div class="container">
+                <div class="filter-scroll">
+                    <button class="filter-chip active">All</button>
+                    <button class="filter-chip">Offers</button>
+                    <button class="filter-chip">Pure Veg</button>
+                    <button class="filter-chip">New</button>
+                    <button class="filter-chip">Rating 4.5+</button>
+                    <button class="filter-chip">Fast Delivery</button>
+                    <button class="filter-chip">Under ₹299</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Slider - Auto Scrolling -->
         <section class="brand-slider-section">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header fade-in">
                     <h2 class="section-title">Featured Brands</h2>
                     <p class="section-description">Top restaurants partnered with us</p>
                 </div>
@@ -86,7 +115,7 @@
         <!-- Top Selling Foods -->
         <section class="top-selling">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header fade-in">
                     <h2 class="section-title">Top Selling Foods</h2>
                     <p class="section-description">Most ordered dishes this week</p>
                 </div>
@@ -97,10 +126,10 @@
             </div>
         </section>
 
-        <!-- Restaurants List -->
+        <!-- Popular Restaurants -->
         <section class="restaurants">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header fade-in">
                     <h2 class="section-title">Popular Restaurants</h2>
                     <p class="section-description">Discover the best restaurants near you</p>
                 </div>
@@ -114,15 +143,91 @@
         <!-- Offer Banner -->
         <section class="offer-banner">
             <div class="container">
-                <div class="banner-content">
+                <div class="banner-content fade-in">
                     <div class="banner-text">
                         <span class="offer-tag">Limited Time Offer</span>
                         <h2>Get 50% OFF on first order</h2>
-                        <p>Use code: YUMMY50</p>
-                        <a href="menu.html" class="btn btn-primary">Order Now</a>
+                        <p>Use code: <span class="highlight">YUMMY50</span></p>
+                        <div class="offer-timer">
+                            <span>Offer ends in:</span>
+                            <div class="timer" id="offerTimer">
+                                <span class="timer-item">02</span>
+                                <span>:</span>
+                                <span class="timer-item">15</span>
+                                <span>:</span>
+                                <span class="timer-item">30</span>
+                            </div>
+                        </div>
+                        <a href="restaurant-menu.html?offer=first" class="btn btn-primary">Order Now</a>
                     </div>
                     <div class="banner-image">
                         <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Offer">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cuisine Categories -->
+        <section class="cuisine-categories">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">Explore Cuisines</h2>
+                    <p class="section-description">Find your favorite cuisine</p>
+                </div>
+                
+                <div class="cuisine-grid">
+                    <div class="cuisine-card">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Italian">
+                        <span>Italian</span>
+                    </div>
+                    <div class="cuisine-card">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="American">
+                        <span>American</span>
+                    </div>
+                    <div class="cuisine-card">
+                        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Indian">
+                        <span>Indian</span>
+                    </div>
+                    <div class="cuisine-card">
+                        <img src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Chinese">
+                        <span>Chinese</span>
+                    </div>
+                    <div class="cuisine-card">
+                        <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Japanese">
+                        <span>Japanese</span>
+                    </div>
+                    <div class="cuisine-card">
+                        <img src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Mexican">
+                        <span>Mexican</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download App Banner -->
+        <section class="app-banner">
+            <div class="container">
+                <div class="app-banner-content">
+                    <div class="app-banner-text">
+                        <h2>Download the YumyTummy App</h2>
+                        <p>Get exclusive offers, track your order in real-time, and much more</p>
+                        <div class="app-buttons">
+                            <a href="#" class="app-btn">
+                                <i class="fab fa-apple"></i>
+                                <span>App Store</span>
+                            </a>
+                            <a href="#" class="app-btn">
+                                <i class="fab fa-google-play"></i>
+                                <span>Google Play</span>
+                            </a>
+                        </div>
+                        <div class="qr-code">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://yumytummy.com/app" alt="QR Code">
+                            <span>Scan to download</span>
+                        </div>
+                    </div>
+                    <div class="app-banner-image">
+                        <img src="assets/images/app-preview.png" alt="App Preview">
                     </div>
                 </div>
             </div>

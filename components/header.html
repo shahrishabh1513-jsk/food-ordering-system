@@ -1,32 +1,40 @@
-<!-- Header Component - Reusable across all pages -->
+<!-- Header Component - Reusable across all pages except index -->
 <header class="header">
     <div class="container header-container">
         <a href="index.html" class="logo">YumyTummy</a>
         
         <nav class="nav-menu">
             <a href="index.html" class="nav-link">Home</a>
-            <a href="menu.html" class="nav-link">Menu</a>
+            <a href="home.html" class="nav-link">Discover</a>
             <a href="#features" class="nav-link">Features</a>
             <a href="#about" class="nav-link">About</a>
             <a href="#contact" class="nav-link">Contact</a>
         </nav>
         
-        <div class="header-actions">
-            <a href="cart.html" class="cart-icon">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count">0</span>
-            </a>
-            <a href="login.html" class="btn btn-outline">Login</a>
-            <a href="signup.html" class="btn btn-primary">Sign Up</a>
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+        <div class="header-actions" id="headerActions">
+            <!-- Dynamic content will be loaded here based on login status -->
         </div>
     </div>
 </header>
 
-<!-- User Menu Template (hidden by default, will be shown when logged in) -->
+<!-- Templates for different header states -->
+<template id="authButtonsTemplate">
+    <a href="cart.html" class="cart-icon">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count">0</span>
+    </a>
+    <a href="login.html" class="btn btn-outline">Login</a>
+    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+</template>
+
 <template id="userMenuTemplate">
+    <a href="cart.html" class="cart-icon">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count">0</span>
+    </a>
     <div class="user-menu">
         <button class="user-menu-btn">
             <i class="fas fa-user-circle"></i>
@@ -40,4 +48,7 @@
             <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </div>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 </template>

@@ -8,16 +8,23 @@ document.addEventListener('DOMContentLoaded', function() {
     loadBrands();
     loadTopSellingFoods();
     loadRestaurants();
+    loadCuisines();
     
     // Initialize search functionality
     initSearch();
     
-    // Check authentication status
-    updateAuthUI();
+    // Initialize quick filters
+    initQuickFilters();
+    
+    // Initialize offer timer
+    initOfferTimer();
+    
+    // Load user preferences
+    loadUserPreferences();
 });
 
 /**
- * Load brands for slider
+ * Load brands for auto-scrolling slider
  */
 function loadBrands() {
     const brands = [
@@ -28,14 +35,19 @@ function loadBrands() {
         { id: 5, name: 'Taco Bell', image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.1, items: 30 },
         { id: 6, name: 'Burger King', image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.3, items: 42 },
         { id: 7, name: 'Domino\'s', image: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.4, items: 38 },
-        { id: 8, name: 'Starbucks', image: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.6, items: 55 }
+        { id: 8, name: 'Starbucks', image: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.6, items: 55 },
+        { id: 9, name: 'Dunkin\'', image: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.2, items: 32 },
+        { id: 10, name: 'Chipotle', image: 'https://images.unsplash.com/photo-1583309219338-a65c4fa0b3c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', rating: 4.5, items: 28 }
     ];
     
     const slider = document.getElementById('brandSlider');
     if (!slider) return;
     
-    slider.innerHTML = brands.map(brand => `
-        <div class="brand-card" onclick="window.location.href='menu.html?brand=${brand.id}'">
+    // Shuffle brands for variety
+    const shuffled = [...brands].sort(() => 0.5 - Math.random());
+    
+    slider.innerHTML = shuffled.map(brand => `
+        <div class="brand-card" onclick="window.location.href='restaurant-menu.html?restaurant=${brand.id}'">
             <div class="brand-image">
                 <img src="${brand.image}" alt="${brand.name}" loading="lazy">
             </div>
@@ -59,7 +71,8 @@ function loadTopSellingFoods() {
             id: 1,
             name: 'Margherita Pizza',
             restaurant: 'Pizza Hut',
-            price: 14.99,
+            restaurantId: 3,
+            price: 399,
             rating: 4.5,
             image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Best Seller'
@@ -68,7 +81,8 @@ function loadTopSellingFoods() {
             id: 2,
             name: 'Classic Cheeseburger',
             restaurant: 'Burger King',
-            price: 11.99,
+            restaurantId: 6,
+            price: 249,
             rating: 4.3,
             image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Hot'
@@ -77,7 +91,8 @@ function loadTopSellingFoods() {
             id: 3,
             name: 'Chicken Bucket',
             restaurant: 'KFC',
-            price: 24.99,
+            restaurantId: 2,
+            price: 599,
             rating: 4.7,
             image: 'https://images.unsplash.com/photo-1625124741492-58401c4a1b9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Family Pack'
@@ -86,7 +101,8 @@ function loadTopSellingFoods() {
             id: 4,
             name: 'Grilled Sandwich',
             restaurant: 'Subway',
-            price: 8.99,
+            restaurantId: 4,
+            price: 199,
             rating: 4.2,
             image: 'https://images.unsplash.com/photo-1553901753-215db344677a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Healthy'
@@ -95,7 +111,8 @@ function loadTopSellingFoods() {
             id: 5,
             name: 'Tacos Supreme',
             restaurant: 'Taco Bell',
-            price: 12.99,
+            restaurantId: 5,
+            price: 299,
             rating: 4.4,
             image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Spicy'
@@ -104,7 +121,8 @@ function loadTopSellingFoods() {
             id: 6,
             name: 'Whopper Meal',
             restaurant: 'Burger King',
-            price: 15.99,
+            restaurantId: 6,
+            price: 399,
             rating: 4.6,
             image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Popular'
@@ -113,7 +131,8 @@ function loadTopSellingFoods() {
             id: 7,
             name: 'Pepperoni Pizza',
             restaurant: 'Domino\'s',
-            price: 16.99,
+            restaurantId: 7,
+            price: 499,
             rating: 4.5,
             image: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'Chef\'s Special'
@@ -122,7 +141,8 @@ function loadTopSellingFoods() {
             id: 8,
             name: 'Caramel Frappe',
             restaurant: 'Starbucks',
-            price: 5.99,
+            restaurantId: 8,
+            price: 299,
             rating: 4.8,
             image: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
             badge: 'New'
@@ -133,7 +153,7 @@ function loadTopSellingFoods() {
     if (!grid) return;
     
     grid.innerHTML = foods.map(food => `
-        <div class="food-card">
+        <div class="food-card" onclick="window.location.href='restaurant-menu.html?restaurant=${food.restaurantId}'">
             ${food.badge ? `<span class="food-badge">${food.badge}</span>` : ''}
             <div class="food-image">
                 <img src="${food.image}" alt="${food.name}" loading="lazy">
@@ -151,8 +171,8 @@ function loadTopSellingFoods() {
                     <i class="fas fa-store"></i> ${food.restaurant}
                 </p>
                 <div class="food-footer">
-                    <span class="food-price">$${food.price}</span>
-                    <button class="add-to-cart" onclick="addToCartFromHome(${food.id}, '${food.name}', ${food.price}, '${food.image}', '${food.restaurant}')">
+                    <span class="food-price">₹${food.price}</span>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCartFromHome(${JSON.stringify(food).replace(/"/g, '&quot;')})">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
@@ -172,7 +192,7 @@ function loadRestaurants() {
             cuisine: 'Italian, Pizza',
             rating: 4.5,
             time: '25-30 min',
-            price: '$$',
+            price: '₹₹',
             image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
             offer: '50% OFF up to ₹100'
         },
@@ -182,7 +202,7 @@ function loadRestaurants() {
             cuisine: 'American, Fast Food',
             rating: 4.3,
             time: '20-25 min',
-            price: '$',
+            price: '₹',
             image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
             offer: 'Buy 1 Get 1 Free'
         },
@@ -192,7 +212,7 @@ function loadRestaurants() {
             cuisine: 'Japanese, Sushi',
             rating: 4.7,
             time: '30-35 min',
-            price: '$$$',
+            price: '₹₹₹',
             image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
             offer: '20% OFF on first order'
         },
@@ -202,7 +222,7 @@ function loadRestaurants() {
             cuisine: 'Mexican',
             rating: 4.4,
             time: '20-30 min',
-            price: '$$',
+            price: '₹₹',
             image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
             offer: 'Free Nachos'
         },
@@ -212,9 +232,9 @@ function loadRestaurants() {
             cuisine: 'Indian, Curry',
             rating: 4.6,
             time: '25-35 min',
-            price: '$$',
+            price: '₹₹',
             image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-            offer: '15% OFF on orders above $30'
+            offer: '15% OFF on orders above ₹500'
         },
         {
             id: 6,
@@ -222,7 +242,7 @@ function loadRestaurants() {
             cuisine: 'Chinese, Thai',
             rating: 4.2,
             time: '25-30 min',
-            price: '$$',
+            price: '₹₹',
             image: 'https://images.unsplash.com/photo-1526318896980-cf78c088247c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
             offer: 'Free Drink'
         }
@@ -232,7 +252,7 @@ function loadRestaurants() {
     if (!grid) return;
     
     grid.innerHTML = restaurants.map(restaurant => `
-        <div class="restaurant-card" onclick="window.location.href='menu.html?restaurant=${restaurant.id}'">
+        <div class="restaurant-card" onclick="window.location.href='restaurant-menu.html?restaurant=${restaurant.id}'">
             <div class="restaurant-image">
                 <img src="${restaurant.image}" alt="${restaurant.name}" loading="lazy">
                 <span class="restaurant-offer">${restaurant.offer}</span>
@@ -249,10 +269,34 @@ function loadRestaurants() {
                     <span><i class="fas fa-clock"></i> ${restaurant.time}</span>
                     <span><i class="fas fa-tag"></i> ${restaurant.price}</span>
                 </div>
-                <button class="order-btn" onclick="event.stopPropagation(); window.location.href='menu.html?restaurant=${restaurant.id}'">
+                <button class="order-btn" onclick="event.stopPropagation(); window.location.href='restaurant-menu.html?restaurant=${restaurant.id}'">
                     Order Now <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
+        </div>
+    `).join('');
+}
+
+/**
+ * Load cuisine categories
+ */
+function loadCuisines() {
+    const cuisines = [
+        { name: 'Italian', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+        { name: 'American', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+        { name: 'Indian', image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+        { name: 'Chinese', image: 'https://images.unsplash.com/photo-1526318896980-cf78c088247c?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+        { name: 'Japanese', image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+        { name: 'Mexican', image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' }
+    ];
+    
+    const grid = document.querySelector('.cuisine-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = cuisines.map(cuisine => `
+        <div class="cuisine-card" onclick="filterByCuisine('${cuisine.name}')">
+            <img src="${cuisine.image}" alt="${cuisine.name}" loading="lazy">
+            <span>${cuisine.name}</span>
         </div>
     `).join('');
 }
@@ -263,13 +307,30 @@ function loadRestaurants() {
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.querySelector('.search-btn');
+    const locationSelect = document.getElementById('location');
     
     if (!searchInput || !searchBtn) return;
     
+    // Load saved location
+    const savedLocation = localStorage.getItem('yumytummy_location');
+    if (savedLocation && locationSelect) {
+        locationSelect.value = savedLocation;
+    }
+    
     const performSearch = () => {
         const query = searchInput.value.trim();
+        const location = locationSelect ? locationSelect.value : 'mumbai';
+        
         if (query) {
-            window.location.href = `menu.html?search=${encodeURIComponent(query)}`;
+            // Save location
+            localStorage.setItem('yumytummy_location', location);
+            
+            Toast.info(`Searching for "${query}" in ${getLocationName(location)}`);
+            
+            // In a real app, this would redirect to search results
+            setTimeout(() => {
+                window.location.href = `search.html?q=${encodeURIComponent(query)}&location=${location}`;
+            }, 1000);
         }
     };
     
@@ -280,73 +341,233 @@ function initSearch() {
             performSearch();
         }
     });
+    
+    // Popular search terms
+    document.querySelectorAll('.popular-searches a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            searchInput.value = link.textContent;
+            performSearch();
+        });
+    });
 }
 
 /**
- * Add to cart from home page
+ * Get location name from value
  */
-function addToCartFromHome(id, name, price, image, restaurant) {
-    const item = {
-        id,
-        name,
-        price,
-        image,
-        restaurant
+function getLocationName(value) {
+    const locations = {
+        'mumbai': 'Mumbai',
+        'delhi': 'Delhi NCR',
+        'bangalore': 'Bangalore',
+        'chennai': 'Chennai',
+        'kolkata': 'Kolkata',
+        'pune': 'Pune',
+        'hyderabad': 'Hyderabad',
+        'ahmedabad': 'Ahmedabad',
+        'jaipur': 'Jaipur',
+        'lucknow': 'Lucknow'
     };
-    
-    addToCart(item);
+    return locations[value] || value;
 }
 
 /**
- * Update UI based on authentication status
+ * Initialize quick filters
  */
-function updateAuthUI() {
-    const user = JSON.parse(localStorage.getItem('yumytummy_user'));
-    const headerActions = document.querySelector('.header-actions');
+function initQuickFilters() {
+    const filters = document.querySelectorAll('.filter-chip');
     
-    if (user && headerActions) {
-        // Replace login/signup with user menu
-        const authButtons = headerActions.querySelectorAll('.btn-outline, .btn-primary');
-        authButtons.forEach(btn => btn.remove());
-        
-        // Add user menu if not already present
-        if (!headerActions.querySelector('.user-menu')) {
-            const userMenu = document.createElement('div');
-            userMenu.className = 'user-menu';
-            userMenu.innerHTML = `
-                <button class="user-menu-btn">
-                    <i class="fas fa-user-circle"></i>
-                    <span>${user.name.split(' ')[0]}</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="user-dropdown">
-                    <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-                    <a href="orders.html"><i class="fas fa-shopping-bag"></i> Orders</a>
-                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            `;
-            headerActions.appendChild(userMenu);
+    filters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            // Remove active class from all filters
+            filters.forEach(f => f.classList.remove('active'));
             
-            // Add logout handler
-            document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                logout();
-            });
+            // Add active class to clicked filter
+            this.classList.add('active');
+            
+            // Animate
+            this.style.animation = 'scaleIn 0.3s ease';
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 300);
+            
+            // Get filter value
+            const filterValue = this.textContent.trim();
+            
+            // Show toast
+            Toast.info(`Filtering by: ${filterValue}`);
+            
+            // In a real app, this would filter the restaurants
+            if (filterValue !== 'All') {
+                filterRestaurants(filterValue);
+            } else {
+                resetFilters();
+            }
+        });
+    });
+}
+
+/**
+ * Filter restaurants (simulated)
+ */
+function filterRestaurants(filter) {
+    const restaurantCards = document.querySelectorAll('.restaurant-card');
+    
+    restaurantCards.forEach(card => {
+        // Simulate filtering - in real app would check actual data
+        if (Math.random() > 0.5) {
+            card.style.display = 'block';
+            card.style.animation = 'fadeIn 0.5s ease';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Reset filters
+ */
+function resetFilters() {
+    const restaurantCards = document.querySelectorAll('.restaurant-card');
+    
+    restaurantCards.forEach(card => {
+        card.style.display = 'block';
+        card.style.animation = 'fadeIn 0.5s ease';
+    });
+}
+
+/**
+ * Filter by cuisine
+ */
+function filterByCuisine(cuisine) {
+    Toast.info(`Showing ${cuisine} restaurants`);
+    
+    // In a real app, this would redirect to filtered results
+    setTimeout(() => {
+        window.location.href = `search.html?cuisine=${encodeURIComponent(cuisine)}`;
+    }, 1000);
+}
+
+/**
+ * Initialize offer timer
+ */
+function initOfferTimer() {
+    const timerItems = document.querySelectorAll('.timer-item');
+    if (timerItems.length < 3) return;
+    
+    // Set end time to 2 hours from now
+    const endTime = new Date();
+    endTime.setHours(endTime.getHours() + 2);
+    
+    function updateTimer() {
+        const now = new Date();
+        const diff = endTime - now;
+        
+        if (diff <= 0) {
+            // Timer expired
+            document.querySelector('.offer-timer').innerHTML = '<span>Offer expired!</span>';
+            return;
+        }
+        
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        timerItems[0].textContent = hours.toString().padStart(2, '0');
+        timerItems[1].textContent = minutes.toString().padStart(2, '0');
+        timerItems[2].textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    // Update timer every second
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+/**
+ * Load user preferences
+ */
+function loadUserPreferences() {
+    const user = JSON.parse(localStorage.getItem('yumytummy_user'));
+    
+    if (user) {
+        // Load favorite cuisine if saved
+        const favCuisine = localStorage.getItem('yumytummy_fav_cuisine');
+        if (favCuisine) {
+            // Highlight favorite cuisine
+            console.log(`User's favorite cuisine: ${favCuisine}`);
         }
     }
 }
 
 /**
- * Logout function
+ * Add to cart from home page
  */
-function logout() {
-    localStorage.removeItem('yumytummy_user');
-    Toast.success('Logged out successfully');
+function addToCartFromHome(food) {
+    const item = {
+        id: food.id,
+        name: food.name,
+        price: food.price,
+        image: food.image,
+        restaurant: food.restaurant,
+        restaurantId: food.restaurantId
+    };
+    
+    addToCart(item);
+    
+    // Animate button
+    const btn = event.currentTarget;
+    btn.classList.add('added');
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    
+    // Create floating animation
+    createFloatingAnimation(btn, food.image);
+    
     setTimeout(() => {
-        window.location.reload();
+        btn.classList.remove('added');
+        btn.innerHTML = '<i class="fas fa-plus"></i>';
     }, 1500);
+}
+
+/**
+ * Create floating animation when adding to cart
+ */
+function createFloatingAnimation(btn, imageUrl) {
+    const cartIcon = document.querySelector('.cart-icon');
+    if (!cartIcon) return;
+    
+    const btnRect = btn.getBoundingClientRect();
+    const cartRect = cartIcon.getBoundingClientRect();
+    
+    const floatingImg = document.createElement('img');
+    floatingImg.src = imageUrl;
+    floatingImg.style.position = 'fixed';
+    floatingImg.style.left = btnRect.left + 'px';
+    floatingImg.style.top = btnRect.top + 'px';
+    floatingImg.style.width = '50px';
+    floatingImg.style.height = '50px';
+    floatingImg.style.borderRadius = '50%';
+    floatingImg.style.objectFit = 'cover';
+    floatingImg.style.zIndex = '9999';
+    floatingImg.style.transition = 'all 1s ease-in-out';
+    floatingImg.style.pointerEvents = 'none';
+    
+    document.body.appendChild(floatingImg);
+    
+    // Animate to cart
+    setTimeout(() => {
+        floatingImg.style.left = cartRect.left + 'px';
+        floatingImg.style.top = cartRect.top + 'px';
+        floatingImg.style.width = '20px';
+        floatingImg.style.height = '20px';
+        floatingImg.style.opacity = '0.5';
+    }, 50);
+    
+    // Remove after animation
+    setTimeout(() => {
+        floatingImg.remove();
+    }, 1050);
 }
 
 // Make functions globally available
 window.addToCartFromHome = addToCartFromHome;
-window.logout = logout;
+window.filterByCuisine = filterByCuisine;

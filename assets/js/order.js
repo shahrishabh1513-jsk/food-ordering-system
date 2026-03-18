@@ -1,425 +1,409 @@
 /**
- * YumyTummy Order Page JavaScript
- * Handles multi-step checkout process
+ * YumyTummy Success Page JavaScript
+ * Handles order confirmation display and tracking
  */
 
-let currentStep = 1;
-let orderData = {};
+let trackingInterval;
+let currentStep = 1; // 1: Preparing, 2: Out for Delivery, 3: Delivered
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Check authentication
-    requireAuth();
-    
     // Load order data
     loadOrderData();
     
-    // Initialize step navigation
-    initStepNavigation();
+    // Initialize buttons
+    initButtons();
     
-    // Load customer data if logged in
-    loadCustomerData();
+    // Start tracking simulation
+    startTrackingSimulation();
     
-    // Initialize payment method switching
-    initPaymentMethods();
+    // Load recommended items
+    loadRecommendedItems();
     
-    // Load order preview
-    loadOrderPreview();
+    // Start progress animation
+    startProgressAnimation();
 });
 
 /**
  * Load order data from localStorage
  */
 function loadOrderData() {
-    const orderSummary = JSON.parse(localStorage.getItem('yumytummy_order_summary'));
-    const cart = JSON.parse(localStorage.getItem('yumytummy_cart'));
+    const order = JSON.parse(localStorage.getItem('yumytummy_current_order'));
     
-    if (!orderSummary && !cart) {
+    if (!order) {
         Toast.error('No order found');
         setTimeout(() => {
-            window.location.href = 'menu.html';
+            window.location.href = 'home.html';
         }, 1500);
         return;
     }
     
-    orderData = {
-        summary: orderSummary,
-        cart: cart
+    // Display order number
+    document.getElementById('orderNumber').textContent = order.id;
+    
+    // Display order time
+    const orderTime = new Date(order.date);
+    document.getElementById('orderTime').textContent = formatTime(orderTime);
+    document.getElementById('orderDate').textContent = formatDate(orderTime);
+    
+    // Display ETA
+    document.getElementById('eta').textContent = order.estimatedTime || '30-40 minutes';
+    
+    // Display order items
+    displayOrderItems(order.items);
+    
+    // Display order summary
+    displayOrderSummary(order.summary, order.tip);
+    
+    // Display delivery address
+    displayDeliveryAddress(order.address);
+    
+    // Display payment method
+    displayPaymentMethod(order.paymentMethod);
+}
+
+/**
+ * Format time for display
+ */
+function formatTime(date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+}
+
+/**
+ * Format date for display
+ */
+function formatDate(date) {
+    const options = { 
+        weekday: 'short', 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
     };
+    return date.toLocaleDateString('en-IN', options);
 }
 
 /**
- * Initialize step navigation
+ * Display order items
  */
-function initStepNavigation() {
-    // Step 1 to Step 2
-    document.getElementById('toStep2Btn').addEventListener('click', validateAndGoToStep2);
+function displayOrderItems(items) {
+    const container = document.getElementById('orderItems');
     
-    // Step 2 to Step 3
-    document.getElementById('toStep3Btn').addEventListener('click', goToStep3);
-    
-    // Place final order
-    document.getElementById('placeFinalOrderBtn').addEventListener('click', placeOrder);
-}
-
-/**
- * Load customer data from localStorage
- */
-function loadCustomerData() {
-    const user = JSON.parse(localStorage.getItem('yumytummy_user'));
-    const savedAddress = JSON.parse(localStorage.getItem('yumytummy_address'));
-    
-    if (user) {
-        document.getElementById('firstName').value = user.name?.split(' ')[0] || '';
-        document.getElementById('lastName').value = user.name?.split(' ')[1] || '';
-        document.getElementById('email').value = user.email || '';
-        document.getElementById('phone').value = user.phone || '';
+    if (!items || items.length === 0) {
+        container.innerHTML = '<p>No items found</p>';
+        return;
     }
     
-    if (savedAddress) {
-        document.getElementById('address').value = savedAddress.address || '';
-        document.getElementById('apartment').value = savedAddress.apartment || '';
-        document.getElementById('city').value = savedAddress.city || '';
-        document.getElementById('state').value = savedAddress.state || '';
-        document.getElementById('zipCode').value = savedAddress.zipCode || '';
-    }
-}
-
-/**
- * Load order preview in sidebar
- */
-function loadOrderPreview() {
-    const cart = orderData.cart || [];
-    const summary = orderData.summary;
-    
-    // Load items preview
-    const previewContainer = document.getElementById('orderItemsPreview');
-    previewContainer.innerHTML = cart.map(item => `
-        <div class="order-preview-item">
-            <div class="preview-item-info">
-                <span class="preview-item-quantity">${item.quantity}x</span>
-                <span class="preview-item-name">${item.name}</span>
+    container.innerHTML = items.map(item => `
+        <div class="order-summary-item">
+            <div class="item-info">
+                <span class="item-quantity">${item.quantity}x</span>
+                <span class="item-name">${item.name}</span>
             </div>
-            <span class="preview-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+            <span class="item-price">₹${(item.price * item.quantity).toFixed(0)}</span>
         </div>
     `).join('');
+}
+
+/**
+ * Display order summary
+ */
+function displayOrderSummary(summary, tip = 0) {
+    if (!summary) return;
     
-    // Update summary
-    if (summary) {
-        document.getElementById('previewSubtotal').textContent = `$${summary.subtotal.toFixed(2)}`;
-        document.getElementById('previewDelivery').textContent = summary.deliveryFee === 0 ? 'Free' : `$${summary.deliveryFee.toFixed(2)}`;
-        document.getElementById('previewTax').textContent = `$${summary.tax.toFixed(2)}`;
-        document.getElementById('previewTotal').textContent = `$${summary.total.toFixed(2)}`;
+    document.getElementById('orderSubtotal').textContent = `₹${summary.subtotal.toFixed(0)}`;
+    document.getElementById('orderDelivery').textContent = summary.deliveryFee === 0 ? 'Free' : `₹${summary.deliveryFee}`;
+    document.getElementById('orderPackaging').textContent = `₹${summary.packagingFee}`;
+    document.getElementById('orderTax').textContent = `₹${summary.tax.toFixed(0)}`;
+    
+    const total = summary.total + (tip || 0);
+    document.getElementById('orderTotal').textContent = `₹${total.toFixed(0)}`;
+}
+
+/**
+ * Display delivery address
+ */
+function displayDeliveryAddress(address) {
+    if (!address) return;
+    
+    let addressHtml = '';
+    
+    if (address.type) {
+        addressHtml += `<p><strong>${address.type}</strong></p>`;
+    }
+    
+    addressHtml += `<p>${address.street}</p>`;
+    
+    if (address.apartment) {
+        addressHtml += `<p>${address.apartment}</p>`;
+    }
+    
+    addressHtml += `<p>${address.city} - ${address.zipCode}</p>`;
+    
+    document.getElementById('deliveryAddress').innerHTML = addressHtml;
+}
+
+/**
+ * Display payment method
+ */
+function displayPaymentMethod(method) {
+    const paymentMap = {
+        'card': 'Credit/Debit Card',
+        'upi': 'UPI',
+        'netbanking': 'Net Banking',
+        'wallet': 'Wallet',
+        'cod': 'Cash on Delivery'
+    };
+    
+    document.getElementById('paymentMethod').textContent = paymentMap[method] || method;
+}
+
+/**
+ * Initialize buttons
+ */
+function initButtons() {
+    // Track order button
+    document.getElementById('trackOrderBtn').addEventListener('click', function() {
+        Toast.info('Opening live tracking...');
+        // In a real app, this would open a map view
+    });
+    
+    // Print bill button
+    document.getElementById('printBillBtn').addEventListener('click', printBill);
+    
+    // Call partner button
+    document.getElementById('callPartner').addEventListener('click', function() {
+        Toast.info('Calling delivery partner...');
+        // In real app, this would initiate a phone call
+    });
+    
+    // Message partner button
+    document.getElementById('messagePartner').addEventListener('click', function() {
+        Toast.info('Opening chat...');
+    });
+    
+    // Share location button
+    document.getElementById('shareLocation').addEventListener('click', function() {
+        Toast.info('Sharing live location...');
+    });
+    
+    // Reorder button
+    document.getElementById('reorderBtn').addEventListener('click', reorderItems);
+}
+
+/**
+ * Print bill
+ */
+function printBill() {
+    window.print();
+}
+
+/**
+ * Reorder same items
+ */
+function reorderItems() {
+    const order = JSON.parse(localStorage.getItem('yumytummy_current_order'));
+    
+    if (order && order.items) {
+        localStorage.setItem('yumytummy_cart', JSON.stringify(order.items));
+        Toast.success('Items added to cart!');
+        setTimeout(() => {
+            window.location.href = 'cart.html';
+        }, 1500);
+    }
+}
+
+/**
+ * Start tracking simulation
+ */
+function startTrackingSimulation() {
+    // Update every 2 minutes in real app, but for demo use shorter intervals
+    trackingInterval = setInterval(() => {
+        currentStep++;
         
-        // Update all summary sections
-        document.getElementById('summarySubtotal').textContent = `$${summary.subtotal.toFixed(2)}`;
-        document.getElementById('summaryDelivery').textContent = summary.deliveryFee === 0 ? 'Free' : `$${summary.deliveryFee.toFixed(2)}`;
-        document.getElementById('summaryTax').textContent = `$${summary.tax.toFixed(2)}`;
-        document.getElementById('summaryTotal').textContent = `$${summary.total.toFixed(2)}`;
-        document.getElementById('paymentTotal').textContent = `$${summary.total.toFixed(2)}`;
-        
-        if (summary.discount > 0) {
-            document.getElementById('summaryDiscount').style.display = 'flex';
-            document.getElementById('summaryDiscountAmount').textContent = `-$${summary.discount.toFixed(2)}`;
-        }
-    }
-}
-
-/**
- * Validate and go to step 2
- */
-function validateAndGoToStep2() {
-    // Get form values
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const city = document.getElementById('city').value.trim();
-    const state = document.getElementById('state').value;
-    const zipCode = document.getElementById('zipCode').value.trim();
-    
-    // Validate
-    if (!firstName || !lastName || !email || !phone || !address || !city || !state || !zipCode) {
-        Toast.error('Please fill in all required fields');
-        return;
-    }
-    
-    if (!validateEmail(email)) {
-        Toast.error('Please enter a valid email address');
-        return;
-    }
-    
-    if (!validatePhone(phone)) {
-        Toast.error('Please enter a valid phone number');
-        return;
-    }
-    
-    if (!validateZipCode(zipCode)) {
-        Toast.error('Please enter a valid ZIP code');
-        return;
-    }
-    
-    // Save address if checkbox is checked
-    if (document.getElementById('saveAddress').checked) {
-        const addressData = {
-            address,
-            apartment: document.getElementById('apartment').value.trim(),
-            city,
-            state,
-            zipCode
-        };
-        localStorage.setItem('yumytummy_address', JSON.stringify(addressData));
-    }
-    
-    // Update step 2 display
-    displayDeliveryAddress();
-    displayFullOrderItems();
-    
-    // Go to step 2
-    goToStep(2);
-}
-
-/**
- * Validate email
- */
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-/**
- * Validate phone
- */
-function validatePhone(phone) {
-    const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-    return re.test(phone);
-}
-
-/**
- * Validate ZIP code
- */
-function validateZipCode(zip) {
-    const re = /^\d{5}(-\d{4})?$/;
-    return re.test(zip);
-}
-
-/**
- * Display delivery address in step 2
- */
-function displayDeliveryAddress() {
-    const addressDisplay = document.getElementById('deliveryAddressDisplay');
-    const apartment = document.getElementById('apartment').value.trim();
-    
-    let addressHtml = `
-        <p><strong>${document.getElementById('firstName').value} ${document.getElementById('lastName').value}</strong></p>
-        <p>${document.getElementById('address').value}</p>
-    `;
-    
-    if (apartment) {
-        addressHtml += `<p>${apartment}</p>`;
-    }
-    
-    addressHtml += `
-        <p>${document.getElementById('city').value}, ${document.getElementById('state').value} ${document.getElementById('zipCode').value}</p>
-        <p>Phone: ${document.getElementById('phone').value}</p>
-    `;
-    
-    addressDisplay.innerHTML = addressHtml;
-}
-
-/**
- * Display full order items in step 2
- */
-function displayFullOrderItems() {
-    const cart = orderData.cart || [];
-    const container = document.getElementById('orderItemsFull');
-    
-    container.innerHTML = cart.map(item => `
-        <div class="order-full-item">
-            <div class="order-full-item-image">
-                <img src="${item.image}" alt="${item.name}">
-            </div>
-            <div class="order-full-item-details">
-                <h4>${item.name}</h4>
-                <p>${item.restaurant}</p>
-                <p>Quantity: ${item.quantity}</p>
-            </div>
-            <div class="order-full-item-price">
-                $${(item.price * item.quantity).toFixed(2)}
-            </div>
-        </div>
-    `).join('');
-    
-    // Set estimated time based on time of day
-    const hour = new Date().getHours();
-    let time;
-    if (hour < 11) {
-        time = '25-30 minutes';
-    } else if (hour < 14) {
-        time = '35-40 minutes (lunch rush)';
-    } else if (hour < 18) {
-        time = '30-35 minutes';
-    } else if (hour < 21) {
-        time = '40-45 minutes (dinner rush)';
-    } else {
-        time = '35-40 minutes';
-    }
-    
-    document.getElementById('estimatedTime').textContent = time;
-}
-
-/**
- * Initialize payment methods switching
- */
-function initPaymentMethods() {
-    const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-    
-    paymentRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            // Hide all payment forms
-            document.getElementById('cardPaymentForm').style.display = 'none';
-            document.getElementById('upiPaymentForm').style.display = 'none';
-            document.getElementById('codMessage').style.display = 'none';
+        if (currentStep === 2) {
+            // Move to "Out for Delivery"
+            updateTimelineStep(2);
+            updateOrderStatus('Out for Delivery');
+            updateETA('15-20 minutes');
+            updateProgressBar(50);
             
-            // Show selected payment form
-            if (this.value === 'card') {
-                document.getElementById('cardPaymentForm').style.display = 'block';
-            } else if (this.value === 'upi') {
-                document.getElementById('upiPaymentForm').style.display = 'block';
-            } else if (this.value === 'cod') {
-                document.getElementById('codMessage').style.display = 'block';
-            }
-        });
+            Toast.info('Your order is out for delivery!');
+            
+            // Update delivery marker position
+            updateDeliveryMarker(50);
+            
+        } else if (currentStep === 3) {
+            // Move to "Delivered"
+            updateTimelineStep(3);
+            updateOrderStatus('Delivered');
+            updateETA('Delivered');
+            updateProgressBar(100);
+            
+            Toast.success('Your order has been delivered! Enjoy your meal!');
+            
+            // Update delivery marker position
+            updateDeliveryMarker(100);
+            
+            // Clear interval
+            clearInterval(trackingInterval);
+            
+            // Show review prompt
+            setTimeout(() => {
+                if (confirm('How was your meal? Would you like to leave a review?')) {
+                    window.location.href = 'review.html';
+                }
+            }, 3000);
+        }
+    }, 10000); // 10 seconds for demo (in real app would be 2 minutes)
+}
+
+/**
+ * Update timeline step
+ */
+function updateTimelineStep(step) {
+    const steps = document.querySelectorAll('.timeline-step');
+    
+    steps.forEach((s, index) => {
+        s.classList.remove('active', 'completed');
+        
+        if (index < step) {
+            s.classList.add('completed');
+        } else if (index === step) {
+            s.classList.add('active');
+        }
     });
 }
 
 /**
- * Go to specific step
+ * Update order status
  */
-function goToStep(step) {
-    // Update step indicators
-    for (let i = 1; i <= 3; i++) {
-        const stepElement = document.getElementById(`step${i}`);
-        const contentElement = document.getElementById(`step${i}Content`);
+function updateOrderStatus(status) {
+    const statusElement = document.querySelector('.order-status');
+    if (statusElement) {
+        statusElement.textContent = status;
         
-        if (i < step) {
-            stepElement.classList.add('completed');
-            stepElement.classList.remove('active');
-        } else if (i === step) {
-            stepElement.classList.add('active');
-            stepElement.classList.remove('completed');
-            contentElement.classList.add('active');
-        } else {
-            stepElement.classList.remove('active', 'completed');
-            contentElement.classList.remove('active');
+        if (status === 'Delivered') {
+            statusElement.style.background = 'var(--success)';
         }
     }
-    
-    currentStep = step;
-    
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
- * Go to step 3
+ * Update ETA
  */
-function goToStep3() {
-    // Validate that we have all necessary data
-    if (!orderData.cart || orderData.cart.length === 0) {
-        Toast.error('No items in order');
-        return;
+function updateETA(eta) {
+    const etaElement = document.getElementById('eta');
+    if (etaElement) {
+        etaElement.textContent = eta;
     }
-    
-    goToStep(3);
 }
 
 /**
- * Place final order
+ * Update progress bar
  */
-function placeOrder() {
-    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-    
-    // Validate payment details based on method
-    if (paymentMethod === 'card') {
-        const cardNumber = document.getElementById('cardNumber').value.trim();
-        const expiryDate = document.getElementById('expiryDate').value.trim();
-        const cvv = document.getElementById('cvv').value.trim();
-        const cardName = document.getElementById('cardName').value.trim();
-        
-        if (!cardNumber || !expiryDate || !cvv || !cardName) {
-            Toast.error('Please fill in all card details');
-            return;
-        }
-        
-        if (cardNumber.replace(/\s/g, '').length !== 16) {
-            Toast.error('Please enter a valid card number');
-            return;
-        }
-        
-        if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
-            Toast.error('Please enter a valid expiry date (MM/YY)');
-            return;
-        }
-        
-        if (cvv.length !== 3) {
-            Toast.error('Please enter a valid CVV');
-            return;
-        }
-    } else if (paymentMethod === 'upi') {
-        const upiId = document.getElementById('upiId').value.trim();
-        if (!upiId || !upiId.includes('@')) {
-            Toast.error('Please enter a valid UPI ID');
-            return;
-        }
+function updateProgressBar(percentage) {
+    const progressBar = document.querySelector('.progress-bar');
+    if (progressBar) {
+        progressBar.style.width = percentage + '%';
     }
-    
-    // Show loading state
-    const placeOrderBtn = document.getElementById('placeFinalOrderBtn');
-    placeOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    placeOrderBtn.disabled = true;
-    
-    // Simulate order placement
-    setTimeout(() => {
-        // Create order object
-        const order = {
-            id: 'ORD' + Date.now(),
-            date: new Date().toISOString(),
-            customer: {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value
-            },
-            address: {
-                street: document.getElementById('address').value,
-                apartment: document.getElementById('apartment').value,
-                city: document.getElementById('city').value,
-                state: document.getElementById('state').value,
-                zipCode: document.getElementById('zipCode').value
-            },
-            items: orderData.cart,
-            summary: orderData.summary,
-            paymentMethod: paymentMethod,
-            estimatedTime: document.getElementById('estimatedTime').textContent
-        };
-        
-        // Save order to localStorage
-        const orders = JSON.parse(localStorage.getItem('yumytummy_orders')) || [];
-        orders.push(order);
-        localStorage.setItem('yumytummy_orders', JSON.stringify(orders));
-        
-        // Clear cart
-        localStorage.removeItem('yumytummy_cart');
-        localStorage.removeItem('yumytummy_order_summary');
-        
-        // Save current order for success page
-        localStorage.setItem('yumytummy_current_order', JSON.stringify(order));
-        
-        // Redirect to success page
-        window.location.href = 'success.html';
-    }, 2000);
 }
+
+/**
+ * Update delivery marker position
+ */
+function updateDeliveryMarker(percentage) {
+    const marker = document.querySelector('.delivery-marker');
+    const path = document.querySelector('.delivery-path');
+    
+    if (marker && path) {
+        const pathWidth = path.offsetWidth;
+        const moveDistance = (pathWidth * percentage) / 100;
+        marker.style.transform = `translateX(${moveDistance}px)`;
+    }
+}
+
+/**
+ * Start progress animation
+ */
+function startProgressAnimation() {
+    const progressBar = document.querySelector('.progress-bar');
+    if (progressBar) {
+        progressBar.style.transition = 'width 30s linear';
+        progressBar.style.width = '25%';
+    }
+}
+
+/**
+ * Load recommended items
+ */
+function loadRecommendedItems() {
+    const recommended = [
+        {
+            id: 101,
+            name: 'Margherita Pizza',
+            price: 399,
+            image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+        },
+        {
+            id: 102,
+            name: 'Classic Burger',
+            price: 299,
+            image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+        },
+        {
+            id: 103,
+            name: 'Chicken Biryani',
+            price: 349,
+            image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+        },
+        {
+            id: 104,
+            name: 'Garlic Bread',
+            price: 149,
+            image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+        }
+    ];
+    
+    const container = document.getElementById('recommendedGrid');
+    if (!container) return;
+    
+    container.innerHTML = recommended.map(item => `
+        <div class="recommended-item" onclick="addToCartFromRecommend(${item.id}, '${item.name}', ${item.price}, '${item.image}')">
+            <img src="${item.image}" alt="${item.name}" loading="lazy">
+            <div class="recommended-item-info">
+                <h4>${item.name}</h4>
+                <p>₹${item.price}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+/**
+ * Add to cart from recommended
+ */
+function addToCartFromRecommend(id, name, price, image) {
+    const item = {
+        id,
+        name,
+        price,
+        image,
+        restaurant: 'Recommended',
+        quantity: 1
+    };
+    
+    addToCart(item);
+}
+
+// Clean up interval on page unload
+window.addEventListener('beforeunload', function() {
+    if (trackingInterval) {
+        clearInterval(trackingInterval);
+    }
+});
 
 // Make functions globally available
-window.goToStep = goToStep;
+window.addToCartFromRecommend = addToCartFromRecommend;

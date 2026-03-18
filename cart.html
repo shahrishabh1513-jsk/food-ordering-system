@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart - YumyTummy</title>
+    <title>Your Cart - YumyTummy</title>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -32,13 +32,20 @@
     <main>
         <div class="container">
             <div class="cart-page">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <a href="home.html">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Cart</span>
+                </div>
+
                 <h1 class="page-title">Your Cart</h1>
                 
                 <div class="cart-container">
                     <!-- Cart Items Section -->
                     <div class="cart-items-section">
                         <div class="cart-header">
-                            <span class="cart-header-item">Item</span>
+                            <span class="cart-header-item">Item Details</span>
                             <span class="cart-header-price">Price</span>
                             <span class="cart-header-quantity">Quantity</span>
                             <span class="cart-header-total">Total</span>
@@ -50,12 +57,20 @@
                         </div>
                         
                         <div class="cart-actions">
-                            <button class="btn btn-outline" onclick="window.location.href='menu.html'">
+                            <button class="btn btn-outline" onclick="window.location.href='home.html'">
                                 <i class="fas fa-arrow-left"></i> Continue Shopping
                             </button>
                             <button class="btn btn-outline" id="clearCartBtn">
-                                <i class="fas fa-trash"></i> Clear Cart
+                                <i class="fas fa-trash-alt"></i> Clear Cart
                             </button>
+                        </div>
+                        
+                        <!-- Saved for Later -->
+                        <div class="saved-items">
+                            <h3>Saved for Later</h3>
+                            <div id="savedItemsContainer" class="saved-items-grid">
+                                <!-- Saved items will be shown here -->
+                            </div>
                         </div>
                     </div>
                     
@@ -66,27 +81,38 @@
                             
                             <div class="summary-row">
                                 <span>Subtotal</span>
-                                <span id="subtotal">$0.00</span>
+                                <span id="subtotal">₹0</span>
                             </div>
                             
                             <div class="summary-row">
                                 <span>Delivery Fee</span>
-                                <span id="deliveryFee">$2.99</span>
+                                <span id="deliveryFee">₹49</span>
                             </div>
                             
                             <div class="summary-row">
-                                <span>Tax (8%)</span>
-                                <span id="tax">$0.00</span>
+                                <span>Packaging Charges</span>
+                                <span id="packagingFee">₹10</span>
+                            </div>
+                            
+                            <div class="summary-row">
+                                <span>GST (5%)</span>
+                                <span id="tax">₹0</span>
                             </div>
                             
                             <div class="summary-row discount-row" id="discountRow" style="display: none;">
                                 <span>Discount</span>
-                                <span id="discountAmount">-$0.00</span>
+                                <span id="discountAmount">-₹0</span>
                             </div>
                             
                             <div class="summary-row total">
                                 <span>Total</span>
-                                <span id="total">$0.00</span>
+                                <span id="total">₹0</span>
+                            </div>
+                            
+                            <!-- Delivery Estimate -->
+                            <div class="delivery-estimate">
+                                <i class="fas fa-clock"></i>
+                                <span>Delivery in 30-40 minutes</span>
                             </div>
                             
                             <!-- Coupon Section -->
@@ -97,6 +123,13 @@
                                     <button class="btn btn-primary" id="applyCouponBtn">Apply</button>
                                 </div>
                                 <div id="couponMessage" class="coupon-message"></div>
+                                
+                                <div class="available-coupons">
+                                    <p>Available coupons:</p>
+                                    <div class="coupon-chip">WELCOME50</div>
+                                    <div class="coupon-chip">FIRST25</div>
+                                    <div class="coupon-chip">FREEDEL</div>
+                                </div>
                             </div>
                             
                             <!-- Place Order Button -->
@@ -111,20 +144,28 @@
                                     <i class="fab fa-cc-visa"></i>
                                     <i class="fab fa-cc-mastercard"></i>
                                     <i class="fab fa-cc-amex"></i>
-                                    <i class="fab fa-cc-paypal"></i>
+                                    <i class="fab fa-cc-rupay"></i>
                                     <i class="fas fa-mobile-alt"></i>
+                                    <i class="fas fa-credit-card"></i>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Delivery Address Card -->
-                        <div class="delivery-card">
-                            <h3>Delivery Address</h3>
-                            <div class="saved-address">
-                                <p><strong>Home</strong></p>
-                                <p>123 Main Street, Apt 4B</p>
-                                <p>New York, NY 10001</p>
-                                <button class="btn-link">Change</button>
+                        <!-- Order Note -->
+                        <div class="order-note">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <p>Free delivery on orders above ₹499</p>
+                                <p>No contact delivery available</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Need Help -->
+                        <div class="need-help">
+                            <i class="fas fa-headset"></i>
+                            <div>
+                                <span>Need help with your order?</span>
+                                <a href="tel:+18001234567">Call us: 1-800-123-4567</a>
                             </div>
                         </div>
                     </div>

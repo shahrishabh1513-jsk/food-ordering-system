@@ -39,6 +39,12 @@ function initPasswordToggles() {
             const icon = this.querySelector('i');
             icon.classList.toggle('fa-eye');
             icon.classList.toggle('fa-eye-slash');
+            
+            // Animate
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
         });
     });
 }
@@ -70,6 +76,12 @@ function initLoginForm() {
         const isPasswordValid = validatePassword(passwordInput);
         
         if (isEmailValid && isPasswordValid) {
+            // Animate button
+            loginBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                loginBtn.style.transform = '';
+            }, 200);
+            
             // Simulate login API call
             simulateLogin();
         }
@@ -94,17 +106,18 @@ function initSignupForm() {
         validateEmail(this);
     });
     
+    phone.addEventListener('input', function() {
+        validatePhone(this);
+    });
+    
     password.addEventListener('input', function() {
         validatePassword(this);
+        updatePasswordRequirements(this.value);
         validatePasswordMatch(password, confirmPassword);
     });
     
     confirmPassword.addEventListener('input', function() {
         validatePasswordMatch(password, this);
-    });
-    
-    phone.addEventListener('input', function() {
-        validatePhone(this);
     });
     
     // Form submission
@@ -122,18 +135,29 @@ function initSignupForm() {
         
         if (!isFirstNameValid) {
             showFieldError(firstName, 'First name is required');
+            firstName.focus();
         }
         
         if (!isLastNameValid) {
             showFieldError(lastName, 'Last name is required');
+            lastName.focus();
         }
         
         if (!isTermsChecked) {
             Toast.warning('Please accept terms and conditions');
+            terms.scrollIntoView({ behavior: 'smooth' });
         }
         
         if (isFirstNameValid && isLastNameValid && isEmailValid && isPhoneValid && 
             isPasswordValid && isPasswordMatch && isTermsChecked) {
+            
+            // Animate button
+            const signupBtn = document.getElementById('signupBtn');
+            signupBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                signupBtn.style.transform = '';
+            }, 200);
+            
             // Simulate signup API call
             simulateSignup();
         }
@@ -200,17 +224,17 @@ function validatePasswordMatch(passwordInput, confirmInput) {
 }
 
 /**
- * Validate phone number
+ * Validate phone number (Indian format)
  */
 function validatePhone(input) {
     const phone = input.value.trim();
-    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    const phoneRegex = /^[6-9]\d{9}$/;
     
     if (!phone) {
         showFieldError(input, 'Phone number is required');
         return false;
-    } else if (!phoneRegex.test(phone)) {
-        showFieldError(input, 'Please enter a valid phone number');
+    } else if (!phoneRegex.test(phone.replace(/[\s+-]/g, ''))) {
+        showFieldError(input, 'Please enter a valid 10-digit Indian mobile number');
         return false;
     } else {
         showFieldSuccess(input);
@@ -227,6 +251,10 @@ function showFieldError(input, message, errorElement = null) {
     
     if (errorElement) {
         errorElement.textContent = message;
+        errorElement.style.animation = 'shake 0.3s ease';
+        setTimeout(() => {
+            errorElement.style.animation = '';
+        }, 300);
     } else {
         // Find or create error element
         let error = input.parentElement.querySelector('.error-message');
@@ -236,6 +264,10 @@ function showFieldError(input, message, errorElement = null) {
             input.parentElement.appendChild(error);
         }
         error.textContent = message;
+        error.style.animation = 'shake 0.3s ease';
+        setTimeout(() => {
+            error.style.animation = '';
+        }, 300);
     }
 }
 
@@ -262,6 +294,7 @@ function showFieldSuccess(input, errorElement = null) {
 function initPasswordStrength() {
     const passwordInput = document.getElementById('password');
     const strengthBars = document.querySelectorAll('.strength-bar');
+    const strengthText = document.getElementById('strengthText');
     
     passwordInput.addEventListener('input', function() {
         const password = this.value;
@@ -272,8 +305,25 @@ function initPasswordStrength() {
             bar.classList.remove('weak', 'medium', 'strong');
             if (index < strength.level) {
                 bar.classList.add(strength.class);
+                
+                // Animate bar
+                bar.style.animation = 'scaleIn 0.3s ease';
+                setTimeout(() => {
+                    bar.style.animation = '';
+                }, 300);
             }
         });
+        
+        // Update strength text
+        if (strengthText) {
+            if (password.length === 0) {
+                strengthText.textContent = 'Enter a password';
+                strengthText.style.color = 'var(--gray)';
+            } else {
+                strengthText.textContent = strength.message;
+                strengthText.style.color = strength.color;
+            }
+        }
     });
 }
 
@@ -283,7 +333,7 @@ function initPasswordStrength() {
 function calculatePasswordStrength(password) {
     let score = 0;
     
-    if (!password) return { level: 0, class: '' };
+    if (!password) return { level: 0, class: '', message: 'Enter a password', color: 'var(--gray)' };
     
     // Length check
     if (password.length >= 8) score++;
@@ -291,12 +341,68 @@ function calculatePasswordStrength(password) {
     
     // Complexity checks
     if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
     if (/[0-9]/.test(password)) score++;
     if (/[^A-Za-z0-9]/.test(password)) score++;
     
-    if (score <= 2) return { level: 1, class: 'weak' };
-    if (score <= 4) return { level: 3, class: 'medium' };
-    return { level: 4, class: 'strong' };
+    if (score <= 2) {
+        return { 
+            level: 1, 
+            class: 'weak', 
+            message: 'Weak password',
+            color: 'var(--error)'
+        };
+    } else if (score <= 4) {
+        return { 
+            level: 3, 
+            class: 'medium', 
+            message: 'Medium password',
+            color: 'var(--warning)'
+        };
+    } else {
+        return { 
+            level: 5, 
+            class: 'strong', 
+            message: 'Strong password',
+            color: 'var(--success)'
+        };
+    }
+}
+
+/**
+ * Update password requirements checklist
+ */
+function updatePasswordRequirements(password) {
+    const reqLength = document.getElementById('reqLength');
+    const reqUppercase = document.getElementById('reqUppercase');
+    const reqLowercase = document.getElementById('reqLowercase');
+    const reqNumber = document.getElementById('reqNumber');
+    const reqSpecial = document.getElementById('reqSpecial');
+    
+    if (reqLength) {
+        reqLength.innerHTML = password.length >= 8 ? '✓ At least 8 characters' : '○ At least 8 characters';
+        reqLength.style.color = password.length >= 8 ? 'var(--success)' : 'var(--gray)';
+    }
+    
+    if (reqUppercase) {
+        reqUppercase.innerHTML = /[A-Z]/.test(password) ? '✓ One uppercase letter' : '○ One uppercase letter';
+        reqUppercase.style.color = /[A-Z]/.test(password) ? 'var(--success)' : 'var(--gray)';
+    }
+    
+    if (reqLowercase) {
+        reqLowercase.innerHTML = /[a-z]/.test(password) ? '✓ One lowercase letter' : '○ One lowercase letter';
+        reqLowercase.style.color = /[a-z]/.test(password) ? 'var(--success)' : 'var(--gray)';
+    }
+    
+    if (reqNumber) {
+        reqNumber.innerHTML = /[0-9]/.test(password) ? '✓ One number' : '○ One number';
+        reqNumber.style.color = /[0-9]/.test(password) ? 'var(--success)' : 'var(--gray)';
+    }
+    
+    if (reqSpecial) {
+        reqSpecial.innerHTML = /[^A-Za-z0-9]/.test(password) ? '✓ One special character' : '○ One special character';
+        reqSpecial.style.color = /[^A-Za-z0-9]/.test(password) ? 'var(--success)' : 'var(--gray)';
+    }
 }
 
 /**
@@ -316,6 +422,7 @@ function simulateLogin() {
         const user = {
             name: 'John Doe',
             email: document.getElementById('email').value,
+            phone: '9876543210',
             isLoggedIn: true
         };
         localStorage.setItem('yumytummy_user', JSON.stringify(user));
@@ -334,7 +441,6 @@ function simulateLogin() {
  */
 function simulateSignup() {
     const signupBtn = document.getElementById('signupBtn');
-    const originalText = signupBtn.innerHTML;
     
     // Show loading state
     signupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
@@ -379,6 +485,17 @@ function requireAuth() {
         }, 1500);
     }
 }
+
+// Add shake animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+`;
+document.head.appendChild(style);
 
 // Make auth functions globally available
 window.isUserLoggedIn = isUserLoggedIn;

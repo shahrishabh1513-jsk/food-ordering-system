@@ -32,6 +32,15 @@
     <main>
         <div class="container">
             <div class="review-page">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <a href="home.html">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="orders.html">My Orders</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Write Review</span>
+                </div>
+
                 <h1 class="page-title">Write a Review</h1>
                 <p class="page-subtitle">Share your experience with us</p>
                 
@@ -39,6 +48,13 @@
                     <!-- Order Summary Card -->
                     <div class="order-card" id="orderCard">
                         <h3>Your Order</h3>
+                        <div class="restaurant-info-mini" id="restaurantInfo">
+                            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Restaurant">
+                            <div>
+                                <h4>Pizza Paradise</h4>
+                                <p>Italian, Pizza</p>
+                            </div>
+                        </div>
                         <div id="reviewOrderItems" class="review-order-items">
                             <!-- Order items will be loaded here -->
                         </div>
@@ -52,7 +68,7 @@
                             <!-- Overall Rating -->
                             <div class="rating-section">
                                 <label>Overall Rating *</label>
-                                <div class="star-rating" id="overallRating">
+                                <div class="star-rating large" id="overallRating">
                                     <i class="far fa-star" data-rating="1"></i>
                                     <i class="far fa-star" data-rating="2"></i>
                                     <i class="far fa-star" data-rating="3"></i>
@@ -60,6 +76,13 @@
                                     <i class="far fa-star" data-rating="5"></i>
                                 </div>
                                 <input type="hidden" id="ratingValue" value="0">
+                                <div class="rating-labels">
+                                    <span>Poor</span>
+                                    <span>Average</span>
+                                    <span>Good</span>
+                                    <span>Very Good</span>
+                                    <span>Excellent</span>
+                                </div>
                             </div>
                             
                             <!-- Food Quality Rating -->
@@ -86,6 +109,18 @@
                                 </div>
                             </div>
                             
+                            <!-- Value for Money -->
+                            <div class="rating-section">
+                                <label>Value for Money</label>
+                                <div class="star-rating" id="valueRating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                            </div>
+                            
                             <!-- Review Text -->
                             <div class="form-group">
                                 <label for="reviewTitle">Review Title *</label>
@@ -94,7 +129,25 @@
                             
                             <div class="form-group">
                                 <label for="reviewContent">Your Review *</label>
-                                <textarea id="reviewContent" rows="5" placeholder="Tell us more about your experience..." required></textarea>
+                                <textarea id="reviewContent" rows="5" placeholder="Tell us more about your experience... What did you like? What could be improved?" required></textarea>
+                                <div class="char-count">
+                                    <span id="charCount">0</span>/500
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Tags -->
+                            <div class="tags-section">
+                                <label>Select tags that describe your experience</label>
+                                <div class="tag-options">
+                                    <span class="tag">Delicious Food</span>
+                                    <span class="tag">Great Service</span>
+                                    <span class="tag">Fast Delivery</span>
+                                    <span class="tag">Good Portions</span>
+                                    <span class="tag">Value for Money</span>
+                                    <span class="tag">Packaging</span>
+                                    <span class="tag">Spicy</span>
+                                    <span class="tag">Fresh</span>
+                                </div>
                             </div>
                             
                             <!-- Photos -->
@@ -107,6 +160,7 @@
                                         <span>Add Photos</span>
                                     </label>
                                     <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
+                                    <p class="upload-note">Upload up to 5 photos (Max 5MB each)</p>
                                 </div>
                             </div>
                             
@@ -116,6 +170,15 @@
                                     <input type="checkbox" id="recommend" checked>
                                     <span class="checkmark"></span>
                                     I would recommend this restaurant to others
+                                </label>
+                            </div>
+                            
+                            <!-- Anonymous Option -->
+                            <div class="form-group">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="anonymous">
+                                    <span class="checkmark"></span>
+                                    Post as anonymous
                                 </label>
                             </div>
                             
@@ -131,6 +194,47 @@
                         <h3>Recent Reviews</h3>
                         <div class="recent-reviews" id="recentReviews">
                             <!-- Recent reviews will be loaded here -->
+                        </div>
+                        
+                        <div class="rating-summary">
+                            <h4>Restaurant Rating</h4>
+                            <div class="rating-bars">
+                                <div class="rating-bar-item">
+                                    <span>5 Star</span>
+                                    <div class="bar">
+                                        <div class="bar-fill" style="width: 70%"></div>
+                                    </div>
+                                    <span>70%</span>
+                                </div>
+                                <div class="rating-bar-item">
+                                    <span>4 Star</span>
+                                    <div class="bar">
+                                        <div class="bar-fill" style="width: 20%"></div>
+                                    </div>
+                                    <span>20%</span>
+                                </div>
+                                <div class="rating-bar-item">
+                                    <span>3 Star</span>
+                                    <div class="bar">
+                                        <div class="bar-fill" style="width: 5%"></div>
+                                    </div>
+                                    <span>5%</span>
+                                </div>
+                                <div class="rating-bar-item">
+                                    <span>2 Star</span>
+                                    <div class="bar">
+                                        <div class="bar-fill" style="width: 3%"></div>
+                                    </div>
+                                    <span>3%</span>
+                                </div>
+                                <div class="rating-bar-item">
+                                    <span>1 Star</span>
+                                    <div class="bar">
+                                        <div class="bar-fill" style="width: 2%"></div>
+                                    </div>
+                                    <span>2%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

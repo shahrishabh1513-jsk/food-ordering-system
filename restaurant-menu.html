@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu - YumyTummy</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/restaurant-menu.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-logo">YT</div>
+        </div>
+    </div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Restaurant Info Banner -->
+        <section class="restaurant-banner" id="restaurantBanner">
+            <div class="container">
+                <div class="restaurant-info">
+                    <div class="restaurant-detail">
+                        <h1 id="restaurantName">Loading...</h1>
+                        <div class="restaurant-meta">
+                            <span class="rating"><i class="fas fa-star"></i> <span id="restaurantRating">4.5</span></span>
+                            <span class="cuisine" id="restaurantCuisine">Multi-Cuisine</span>
+                            <span class="time"><i class="fas fa-clock"></i> <span id="restaurantTime">25-30</span> min</span>
+                            <span class="price"><i class="fas fa-tag"></i> <span id="restaurantPrice">₹₹</span></span>
+                        </div>
+                    </div>
+                    <div class="restaurant-offer" id="restaurantOffer">
+                        <i class="fas fa-gift"></i> 50% OFF up to ₹100
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section class="menu-section">
+            <div class="container">
+                <!-- Search and Filter Bar -->
+                <div class="menu-filter-bar">
+                    <div class="search-box menu-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="menuSearch" placeholder="Search in menu...">
+                    </div>
+                    <div class="filter-options">
+                        <select id="sortFilter">
+                            <option value="popular">Sort by: Popular</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                        <button class="filter-btn" id="filterBtn">
+                            <i class="fas fa-sliders-h"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="menu-container">
+                    <!-- Categories Sidebar -->
+                    <aside class="categories-sidebar">
+                        <h3>Categories</h3>
+                        <ul class="category-list" id="categoryList">
+                            <!-- Categories will be populated by JavaScript -->
+                        </ul>
+                        
+                        <div class="restaurant-timings">
+                            <h4>Opening Hours</h4>
+                            <div class="timing-item">
+                                <span>Monday - Friday</span>
+                                <span>11:00 AM - 11:00 PM</span>
+                            </div>
+                            <div class="timing-item">
+                                <span>Saturday - Sunday</span>
+                                <span>10:00 AM - 12:00 AM</span>
+                            </div>
+                        </div>
+                        
+                        <div class="restaurant-features">
+                            <div class="feature-tag">
+                                <i class="fas fa-leaf"></i>
+                                <span>Pure Veg Options</span>
+                            </div>
+                            <div class="feature-tag">
+                                <i class="fas fa-fire"></i>
+                                <span>Spicy</span>
+                            </div>
+                            <div class="feature-tag">
+                                <i class="fas fa-wheat-alt"></i>
+                                <span>Gluten-Free Options</span>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Menu Items Grid -->
+                    <div class="menu-content">
+                        <!-- Menu Items Grid -->
+                        <div class="menu-grid" id="menuGrid">
+                            <!-- Menu items will be populated by JavaScript -->
+                        </div>
+                        
+                        <!-- Recommended Section -->
+                        <div class="recommended-section">
+                            <h3>Chef's Recommendations</h3>
+                            <div class="recommended-grid" id="recommendedGrid">
+                                <!-- Recommended items will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Sidebar -->
+        <div class="cart-sidebar" id="cartSidebar">
+            <div class="cart-sidebar-header">
+                <h3>Your Cart</h3>
+                <button class="close-cart" id="closeCart"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-sidebar-items" id="cartSidebarItems">
+                <!-- Cart items will be shown here -->
+            </div>
+            <div class="cart-sidebar-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="total-amount" id="sidebarTotal">₹0</span>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn btn-outline" onclick="clearCart()">Clear</button>
+                    <button class="btn btn-primary" onclick="window.location.href='cart.html'">
+                        View Cart <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Cart Button -->
+        <button class="floating-cart" id="floatingCart">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-count">0</span>
+        </button>
+
+        <!-- Item Added Animation -->
+        <div class="item-added-toast" id="itemAddedToast">
+            <i class="fas fa-check-circle"></i>
+            <span>Item added to cart!</span>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/restaurant-menu.js"></script>
+</body>
+</html>

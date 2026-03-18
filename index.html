@@ -25,8 +25,32 @@
         </div>
     </div>
 
-    <!-- Header Component (will be loaded via JS) -->
-    <div id="header-placeholder"></div>
+    <!-- Built-in Header for Index Page -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">YumyTummy</a>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="home.html" class="nav-link">Discover</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+            
+            <div class="header-actions">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
     <main>
         <!-- Hero Section -->
@@ -60,16 +84,16 @@
                 <div class="hero-image fade-in">
                     <div class="hero-image-grid">
                         <div class="grid-item item1">
-                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=481&q=80" alt="Pizza" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=481&q=80" alt="Pizza" loading="lazy">
                         </div>
                         <div class="grid-item item2">
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=499&q=80" alt="Burger" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=499&q=80" alt="Burger" loading="lazy">
                         </div>
                         <div class="grid-item item3">
-                            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Pizza Slice" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80" alt="Pizza Slice" loading="lazy">
                         </div>
                         <div class="grid-item item4">
-                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80" alt="Grilled Food" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=387&q=80" alt="Grilled Food" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -128,56 +152,56 @@
                 <div class="popular-grid">
                     <div class="popular-card fade-in">
                         <div class="popular-image">
-                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=580&q=80" alt="Salad Bowl" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=580&q=80" alt="Salad Bowl" loading="lazy">
                             <span class="popular-badge">Popular</span>
                         </div>
                         <div class="popular-content">
                             <h4>Fresh Harvest Bowl</h4>
                             <p>Quinoa, avocado, mixed greens</p>
                             <div class="popular-footer">
-                                <span class="popular-price">$12.99</span>
+                                <span class="popular-price">₹499</span>
                                 <button class="btn-icon"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
                     <div class="popular-card fade-in" data-delay="100">
                         <div class="popular-image">
-                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=481&q=80" alt="Pizza" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=481&q=80" alt="Pizza" loading="lazy">
                             <span class="popular-badge">Hot</span>
                         </div>
                         <div class="popular-content">
                             <h4>Margherita Pizza</h4>
                             <p>Fresh basil, mozzarella, tomato sauce</p>
                             <div class="popular-footer">
-                                <span class="popular-price">$14.99</span>
+                                <span class="popular-price">₹599</span>
                                 <button class="btn-icon"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
                     <div class="popular-card fade-in" data-delay="200">
                         <div class="popular-image">
-                            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=464&q=80" alt="Sushi" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&auto=format&fit=crop&w=464&q=80" alt="Sushi" loading="lazy">
                             <span class="popular-badge">New</span>
                         </div>
                         <div class="popular-content">
                             <h4>Dragon Roll Sushi</h4>
                             <p>Eel, cucumber, avocado</p>
                             <div class="popular-footer">
-                                <span class="popular-price">$18.99</span>
+                                <span class="popular-price">₹899</span>
                                 <button class="btn-icon"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
                     <div class="popular-card fade-in" data-delay="300">
                         <div class="popular-image">
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=499&q=80" alt="Burger" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=499&q=80" alt="Burger" loading="lazy">
                             <span class="popular-badge">Trending</span>
                         </div>
                         <div class="popular-content">
                             <h4>Classic Cheeseburger</h4>
                             <p>Angus beef, cheddar, caramelized onions</p>
                             <div class="popular-footer">
-                                <span class="popular-price">$11.99</span>
+                                <span class="popular-price">₹449</span>
                                 <button class="btn-icon"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
@@ -187,7 +211,7 @@
         </section>
 
         <!-- About Section -->
-        <section class="about">
+        <section class="about" id="about">
             <div class="container">
                 <div class="about-container">
                     <div class="about-content fade-in">
@@ -209,10 +233,10 @@
                                 <span>24/7 Customer Support</span>
                             </div>
                         </div>
-                        <a href="menu.html" class="btn btn-primary">Explore Menu <i class="fas fa-arrow-right"></i></a>
+                        <a href="home.html" class="btn btn-primary">Explore Menu <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="about-image fade-in">
-                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Restaurant Kitchen" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80" alt="Restaurant Kitchen" loading="lazy">
                         <div class="about-image-card">
                             <i class="fas fa-smile"></i>
                             <div>
@@ -220,6 +244,53 @@
                                 <span>5-Star Reviews</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <span class="section-subtitle">Get In Touch</span>
+                    <h2 class="section-title">We're Here to Help</h2>
+                    <p class="section-description">Have questions? We'd love to hear from you</p>
+                </div>
+                <div class="contact-container">
+                    <div class="contact-info fade-in">
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <div>
+                                <h3>Call Us</h3>
+                                <p>+91 98765 43210</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h3>Email Us</h3>
+                                <p>support@yumytummy.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h3>Visit Us</h3>
+                                <p>Mumbai, Maharashtra, India</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form fade-in">
+                        <form id="contactForm">
+                            <div class="form-row">
+                                <input type="text" placeholder="Your Name" required>
+                                <input type="email" placeholder="Your Email" required>
+                            </div>
+                            <input type="text" placeholder="Subject" required>
+                            <textarea rows="5" placeholder="Your Message" required></textarea>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
                     </div>
                 </div>
             </div>

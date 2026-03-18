@@ -5,9 +5,11 @@
 
 // Coupon codes
 const COUPONS = {
-    'YUMMY50': { discount: 50, type: 'percentage', minOrder: 20 },
-    'SAVE20': { discount: 20, type: 'fixed', minOrder: 30 },
-    'FREEDEL': { discount: 2.99, type: 'delivery', minOrder: 25 }
+    'WELCOME50': { discount: 50, type: 'percentage', minOrder: 199 },
+    'FIRST25': { discount: 25, type: 'fixed', minOrder: 299 },
+    'FREEDEL': { discount: 49, type: 'delivery', minOrder: 299 },
+    'SAVE20': { discount: 20, type: 'percentage', minOrder: 399 },
+    'HUNGRY': { discount: 75, type: 'fixed', minOrder: 499 }
 };
 
 let currentCoupon = null;
@@ -15,6 +17,9 @@ let currentCoupon = null;
 document.addEventListener('DOMContentLoaded', function() {
     // Load cart items
     loadCartItems();
+    
+    // Load saved items
+    loadSavedItems();
     
     // Initialize event listeners
     initEventListeners();
@@ -26,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadCartItems() {
     const cart = JSON.parse(localStorage.getItem('yumytummy_cart')) || [];
     const container = document.getElementById('cartItemsContainer');
+    const cartActions = document.querySelector('.cart-actions');
     
     if (cart.length === 0) {
         displayEmptyCart();
@@ -43,7 +49,7 @@ function loadCartItems() {
                     <p><i class="fas fa-store"></i> ${item.restaurant}</p>
                 </div>
             </div>
-            <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+            <div class="cart-item-price">₹${item.price}</div>
             <div class="cart-item-quantity">
                 <button class="quantity-btn" onclick="updateQuantity(${item.id}, 'decrease')" ${item.quantity <= 1 ? 'disabled' : ''}>
                     <i class="fas fa-minus"></i>
@@ -53,14 +59,18 @@ function loadCartItems() {
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
-            <div class="cart-item-total">$${(item.price * (item.quantity || 1)).toFixed(2)}</div>
+            <div class="cart-item-total">₹${(item.price * (item.quantity || 1)).toFixed(0)}</div>
             <button class="remove-item" onclick="removeItem(${item.id})">
-                <i class="fas fa-trash"></i>
+                <i class="fas fa-trash-alt"></i>
             </button>
         </div>
     `).join('');
     
     updateCartSummary();
+    
+    if (cartActions) {
+        cartActions.style.display = 'flex';
+    }
 }
 
 /**
@@ -68,20 +78,61 @@ function loadCartItems() {
  */
 function displayEmptyCart() {
     const container = document.getElementById('cartItemsContainer');
+    const cartActions = document.querySelector('.cart-actions');
+    const savedItems = document.querySelector('.saved-items');
+    
     container.innerHTML = `
         <div class="empty-cart">
             <i class="fas fa-shopping-bag"></i>
             <h3>Your cart is empty</h3>
             <p>Looks like you haven't added anything to your cart yet</p>
-            <a href="menu.html" class="btn btn-primary">Browse Menu</a>
+            <a href="home.html" class="btn btn-primary">Browse Restaurants</a>
         </div>
     `;
     
-    // Hide cart actions
-    document.querySelector('.cart-actions').style.display = 'none';
+    if (cartActions) {
+        cartActions.style.display = 'none';
+    }
     
-    // Update summary
-    updateCartSummary();
+    if (savedItems) {
+        savedItems.style.display = 'none';
+    }
+}
+
+/**
+ * Load saved for later items
+ */
+function loadSavedItems() {
+    const saved = JSON.parse(localStorage.getItem('yumytummy_saved')) || [];
+    const container = document.getElementById('savedItemsContainer');
+    const savedSection = document.querySelector('.saved-items');
+    
+    if (saved.length === 0) {
+        if (savedSection) {
+            savedSection.style.display = 'none';
+        }
+        return;
+    }
+    
+    container.innerHTML = saved.map(item => `
+        <div class="saved-item">
+            <div class="saved-item-image">
+                <img src="${item.image}" alt="${item.name}">
+            </div>
+            <div class="saved-item-details">
+                <h4>${item.name}</h4>
+                <p>₹${item.price}</p>
+            </div>
+            <div class="saved-item-actions">
+                <button onclick="moveToCart(${item.id})" title="Add to cart">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+                <button onclick="removeSaved(${item.id})" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
 }
 
 /**
@@ -103,6 +154,14 @@ function initEventListeners() {
             applyCoupon();
         }
     });
+    
+    // Coupon chips
+    document.querySelectorAll('.coupon-chip').forEach(chip => {
+        chip.addEventListener('click', function() {
+            document.getElementById('couponInput').value = this.textContent;
+            applyCoupon();
+        });
+    });
 }
 
 /**
@@ -110,7 +169,7 @@ function initEventListeners() {
  */
 function updateQuantity(itemId, action) {
     let cart = JSON.parse(localStorage.getItem('yumytummy_cart')) || [];
-    const itemIndex = cart.findIndex(item => item.id === itemId);
+    const itemIndex = cart.findIndex(item => item.id == itemId);
     
     if (itemIndex !== -1) {
         const item = cart[itemIndex];
@@ -118,8 +177,10 @@ function updateQuantity(itemId, action) {
         
         if (action === 'increase') {
             item.quantity = currentQty + 1;
+            animateQuantityChange('increase');
         } else if (action === 'decrease' && currentQty > 1) {
             item.quantity = currentQty - 1;
+            animateQuantityChange('decrease');
         }
         
         localStorage.setItem('yumytummy_cart', JSON.stringify(cart));
@@ -127,10 +188,25 @@ function updateQuantity(itemId, action) {
         // Update display
         loadCartItems();
         updateCartCount();
-        
-        // Show toast notification
-        Toast.success('Cart updated');
     }
+}
+
+/**
+ * Animate quantity change
+ */
+function animateQuantityChange(type) {
+    const toast = document.createElement('div');
+    toast.className = 'item-added-toast show';
+    toast.innerHTML = `
+        <i class="fas fa-${type === 'increase' ? 'plus' : 'minus'}-circle"></i>
+        <span>Quantity ${type === 'increase' ? 'increased' : 'decreased'}</span>
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 1500);
 }
 
 /**
@@ -138,7 +214,14 @@ function updateQuantity(itemId, action) {
  */
 function removeItem(itemId) {
     let cart = JSON.parse(localStorage.getItem('yumytummy_cart')) || [];
-    cart = cart.filter(item => item.id !== itemId);
+    
+    // Ask if user wants to save for later
+    if (confirm('Do you want to save this item for later?')) {
+        const item = cart.find(item => item.id == itemId);
+        saveForLater(item);
+    }
+    
+    cart = cart.filter(item => item.id != itemId);
     
     localStorage.setItem('yumytummy_cart', JSON.stringify(cart));
     
@@ -146,8 +229,50 @@ function removeItem(itemId) {
     loadCartItems();
     updateCartCount();
     
-    // Show toast notification
     Toast.success('Item removed from cart');
+}
+
+/**
+ * Save item for later
+ */
+function saveForLater(item) {
+    let saved = JSON.parse(localStorage.getItem('yumytummy_saved')) || [];
+    saved.push(item);
+    localStorage.setItem('yumytummy_saved', JSON.stringify(saved));
+}
+
+/**
+ * Move item from saved to cart
+ */
+function moveToCart(itemId) {
+    let saved = JSON.parse(localStorage.getItem('yumytummy_saved')) || [];
+    let cart = JSON.parse(localStorage.getItem('yumytummy_cart')) || [];
+    
+    const itemIndex = saved.findIndex(item => item.id == itemId);
+    if (itemIndex !== -1) {
+        const item = saved[itemIndex];
+        cart.push(item);
+        saved.splice(itemIndex, 1);
+        
+        localStorage.setItem('yumytummy_cart', JSON.stringify(cart));
+        localStorage.setItem('yumytummy_saved', JSON.stringify(saved));
+        
+        loadCartItems();
+        loadSavedItems();
+        updateCartCount();
+        
+        Toast.success('Item moved to cart');
+    }
+}
+
+/**
+ * Remove saved item
+ */
+function removeSaved(itemId) {
+    let saved = JSON.parse(localStorage.getItem('yumytummy_saved')) || [];
+    saved = saved.filter(item => item.id != itemId);
+    localStorage.setItem('yumytummy_saved', JSON.stringify(saved));
+    loadSavedItems();
 }
 
 /**
@@ -177,11 +302,15 @@ function updateCartSummary() {
     // Calculate subtotal
     const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
     
-    // Delivery fee (free over $50)
-    const deliveryFee = subtotal >= 50 ? 0 : 2.99;
+    // Delivery fee (free over ₹499)
+    const deliveryFee = subtotal >= 499 ? 0 : 49;
     
-    // Calculate tax (8%)
-    const tax = subtotal * 0.08;
+    // Packaging fee
+    const packagingFee = 10;
+    
+    // Calculate tax (5% GST)
+    const taxableAmount = subtotal + packagingFee;
+    const tax = taxableAmount * 0.05;
     
     // Calculate discount
     let discount = 0;
@@ -198,19 +327,20 @@ function updateCartSummary() {
         discount = Math.min(discount, subtotal);
         
         document.getElementById('discountRow').style.display = 'flex';
-        document.getElementById('discountAmount').textContent = `-$${discount.toFixed(2)}`;
+        document.getElementById('discountAmount').textContent = `-₹${discount.toFixed(0)}`;
     } else {
         document.getElementById('discountRow').style.display = 'none';
     }
     
     // Calculate total
-    const total = subtotal + deliveryFee + tax - discount;
+    const total = subtotal + deliveryFee + packagingFee + tax - discount;
     
     // Update display
-    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-    document.getElementById('deliveryFee').textContent = deliveryFee === 0 ? 'Free' : `$${deliveryFee.toFixed(2)}`;
-    document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
-    document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(0)}`;
+    document.getElementById('deliveryFee').textContent = deliveryFee === 0 ? 'Free' : `₹${deliveryFee}`;
+    document.getElementById('packagingFee').textContent = `₹${packagingFee}`;
+    document.getElementById('tax').textContent = `₹${tax.toFixed(0)}`;
+    document.getElementById('total').textContent = `₹${total.toFixed(0)}`;
 }
 
 /**
@@ -241,7 +371,7 @@ function applyCoupon() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
     
     if (subtotal < coupon.minOrder) {
-        couponMessage.textContent = `Minimum order of $${coupon.minOrder} required for this coupon`;
+        couponMessage.textContent = `Minimum order of ₹${coupon.minOrder} required for this coupon`;
         couponMessage.className = 'coupon-message error';
         currentCoupon = null;
         updateCartSummary();
@@ -279,8 +409,9 @@ function placeOrder() {
     
     // Save order summary for order page
     const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-    const deliveryFee = subtotal >= 50 ? 0 : 2.99;
-    const tax = subtotal * 0.08;
+    const deliveryFee = subtotal >= 499 ? 0 : 49;
+    const packagingFee = 10;
+    const tax = (subtotal + packagingFee) * 0.05;
     let discount = 0;
     
     if (currentCoupon && subtotal >= currentCoupon.minOrder) {
@@ -293,12 +424,13 @@ function placeOrder() {
         }
     }
     
-    const total = subtotal + deliveryFee + tax - discount;
+    const total = subtotal + deliveryFee + packagingFee + tax - discount;
     
     const orderSummary = {
         items: cart,
         subtotal,
         deliveryFee,
+        packagingFee,
         tax,
         discount,
         total,
@@ -314,3 +446,5 @@ function placeOrder() {
 // Make functions globally available
 window.updateQuantity = updateQuantity;
 window.removeItem = removeItem;
+window.moveToCart = moveToCart;
+window.removeSaved = removeSaved;
